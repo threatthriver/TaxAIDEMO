@@ -56,7 +56,7 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   },
   async ( input ) => {
     const {output} = await ai.generate({
-      model: googleAI.model('gemini-1.5-pro-latest'),
+      model: googleAI.model('gemini-2.5-pro'),
       prompt: `You are an expert tax consultant for ${input.country}. Analyze the provided financial document for a client requesting a "${input.analysisType}" analysis. Based on the document's content, provide a detailed, actionable tax-saving plan.
 
 **Instructions:**
