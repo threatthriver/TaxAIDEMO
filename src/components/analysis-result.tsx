@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
@@ -71,13 +72,16 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
     };
     
     useEffect(() => {
-        if (scrollAreaRef.current) {
-            scrollAreaRef.current.scrollTo({
-                top: scrollAreaRef.current.scrollHeight,
-                behavior: 'smooth'
-            });
+        if (isOpen && messages.length > 0) {
+            const scrollableArea = scrollAreaRef.current?.querySelector('div[data-radix-scroll-area-viewport]');
+            if(scrollableArea) {
+                scrollableArea.scrollTo({
+                    top: scrollableArea.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
         }
-    }, [messages]);
+    }, [messages, isOpen]);
 
     return (
         <div className="fixed bottom-6 right-6 z-50">
@@ -88,9 +92,9 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                            <Bot /> AI Financial Assistant
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="flex-1 p-0">
-                        <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
-                            <div className="space-y-4">
+                    <CardContent className="flex-1 p-0 overflow-hidden">
+                        <ScrollArea className="h-full" ref={scrollAreaRef}>
+                            <div className="p-4 space-y-4">
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                                         {msg.role === 'model' && <Bot className="h-6 w-6 text-primary flex-shrink-0" />}
@@ -106,8 +110,8 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                                         <div className="rounded-lg px-4 py-2 max-w-xs text-sm bg-secondary text-secondary-foreground">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-75"></div>
-                                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-150"></div>
+                                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse [animation-delay:0.2s]"></div>
+                                                <div className="w-2 h-2 bg-primary rounded-full animate-pulse [animation-delay:0.4s]"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -347,3 +351,5 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     </>
   );
 }
+
+    
