@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { UploadCloud, XCircle, File as FileIcon } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
 
 import { analyzeTaxDocument, type AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
 import LoadingState from '@/components/loading-state';
@@ -25,6 +26,7 @@ export default function TaxPlannerPage() {
     const [files, setFiles] = useState<File[]>([]);
     const [country, setCountry] = useState('United States');
     const [analysisType, setAnalysisType] = useState('Individual / Personal');
+    const [additionalNotes, setAdditionalNotes] = useState('');
     const [analysisResult, setAnalysisResult] = useState<AnalyzeTaxDocumentOutput | null>(null);
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
@@ -43,6 +45,7 @@ export default function TaxPlannerPage() {
         setFiles([]);
         setAnalysisResult(null);
         setLoading(false);
+        setAdditionalNotes('');
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,6 +68,7 @@ export default function TaxPlannerPage() {
                 fileDataUris,
                 country,
                 analysisType,
+                additionalNotes,
             });
 
             setAnalysisResult(result);
@@ -155,6 +159,18 @@ export default function TaxPlannerPage() {
                                 </SelectContent>
                             </Select>
                         </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="additional-notes" className="text-lg font-bold">4. Additional Notes or Questions (Optional)</Label>
+                          <Textarea
+                              id="additional-notes"
+                              placeholder="e.g., I'm planning to buy a house this year. How can I prepare? or Focus on deductions for my freelance business."
+                              value={additionalNotes}
+                              onChange={(e) => setAdditionalNotes(e.target.value)}
+                              className="min-h-[100px] text-base"
+                          />
+                        </div>
+
 
                         <div className="pt-4 text-center">
                             <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading || files.length === 0}>
