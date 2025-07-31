@@ -46,7 +46,7 @@ export default function HomePage({ setPage }: HomePageProps) {
           </div>
           <div className="relative hidden md:block">
              <Image 
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1663277627902-c49b3c968570?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOHx8c2F2ZSUyMHlvdXIlMjBNb25leXxlbnwwfHx8fDE3NTM5NTk3NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Tax documents and charts illustration" 
                 width={600} 
                 height={400} 
