@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 
 const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: string; children: React.ReactNode }) => (
-  <Card className="bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary">
+  <Card className="bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary animate-fade-in-up">
     <CardHeader className="flex flex-row items-center gap-4">
       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
         {icon}
@@ -28,7 +28,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="bg-card pt-10 md:pt-0">
         <div className="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-left">
+          <div className="text-left animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">
               Automated Tax Planning. <span className="text-primary">Unmatched Savings.</span>
             </h1>
@@ -44,7 +44,7 @@ export default function HomePage() {
               </Button>
             </Link>
           </div>
-          <div className="relative hidden md:block">
+          <div className="relative hidden md:block animate-fade-in-up">
              <Image 
                 src="https://images.unsplash.com/photo-1563198804-b144dfc1661c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxUYXh8ZW58MHx8fHwxNzUzOTYyOTE5fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Tax documents and charts illustration" 
@@ -60,7 +60,7 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-20 md:py-24 bg-background">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl font-bold text-foreground">The Future of Tax Strategy is Here</h2>
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">An end-to-end solution designed for accuracy, efficiency, and actionable insights.</p>
           </div>
@@ -89,7 +89,7 @@ export default function HomePage() {
 
       {/* CTA Section */}
       <section className="py-20 md:py-24 bg-card">
-        <div className="container mx-auto px-6 text-center">
+        <div className="container mx-auto px-6 text-center animate-fade-in">
             <h2 className="text-4xl font-bold text-foreground">Ready to Take Control of Your Taxes?</h2>
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.

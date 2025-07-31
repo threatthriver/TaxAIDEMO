@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -51,7 +52,7 @@ export default function PricingPage() {
     return (
         <div className="bg-background min-h-[calc(100vh-80px)] py-20">
             <div className="container mx-auto px-4 sm:px-6">
-                 <div className="text-center mb-16">
+                 <div className="text-center mb-16 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
                         Find the Right Plan for You
                     </h1>
@@ -61,8 +62,8 @@ export default function PricingPage() {
                 </div>
                 
                 <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    {pricingTiers.map(tier => (
-                        <Card key={tier.name} className={`flex flex-col ${tier.popular ? 'border-2 border-primary shadow-2xl' : 'shadow-lg'}`}>
+                    {pricingTiers.map((tier, index) => (
+                        <Card key={tier.name} className={`flex flex-col ${tier.popular ? 'border-2 border-primary shadow-2xl' : 'shadow-lg'} animate-fade-in-up`} style={{animationDelay: `${index * 0.2}s`}}>
                             <CardHeader>
                                 <CardTitle className="text-2xl">{tier.name}</CardTitle>
                                 <CardDescription>{tier.description}</CardDescription>

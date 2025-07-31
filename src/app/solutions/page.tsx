@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,7 @@ export default function SolutionsPage() {
     return (
         <div className="bg-background min-h-[calc(100vh-80px)] py-20">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="text-center mb-16">
+                <div className="text-center mb-16 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
                         Tailored Solutions for Everyone
                     </h1>
@@ -17,7 +18,7 @@ export default function SolutionsPage() {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8">
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow">
+                    <Card className="shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up" style={{animationDelay: '0.2s'}}>
                         <CardHeader>
                             <CardTitle className="text-2xl">For Individuals</CardTitle>
                         </CardHeader>
@@ -30,7 +31,7 @@ export default function SolutionsPage() {
                             </ul>
                         </CardContent>
                     </Card>
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow border-2 border-primary">
+                    <Card className="shadow-lg hover:shadow-xl transition-shadow border-2 border-primary animate-fade-in-up" style={{animationDelay: '0.4s'}}>
                         <CardHeader>
                             <CardTitle className="text-2xl">For Small Businesses / LLCs</CardTitle>
                         </CardHeader>
@@ -43,7 +44,7 @@ export default function SolutionsPage() {
                             </ul>
                         </CardContent>
                     </Card>
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow">
+                    <Card className="shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up" style={{animationDelay: '0.6s'}}>
                         <CardHeader>
                             <CardTitle className="text-2xl">For Corporations</CardTitle>
                         </CardHeader>
