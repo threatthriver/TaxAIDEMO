@@ -4,13 +4,35 @@ import type { AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
 type AnalysisResultDisplayProps = {
   result: AnalyzeTaxDocumentOutput;
   onReset: () => void;
 };
 
+// Helper function to parse savings string and calculate an average
+const parseSavings = (savings: string): number => {
+    // Remove currency symbols and commas
+    const cleanedString = savings.replace(/[$,₹]/g, '').replace(/,/g, '');
+    const numbers = cleanedString.split('-').map(s => parseFloat(s.trim()));
+    if (numbers.length > 1) {
+      return (numbers[0] + numbers[1]) / 2;
+    }
+    if (numbers.length === 1 && !isNaN(numbers[0])) {
+      return numbers[0];
+    }
+    return 0;
+};
+
+
 export default function AnalysisResultDisplay({ result, onReset }: AnalysisResultDisplayProps) {
+    const chartData = result.strategies.map(strategy => ({
+        name: strategy.title,
+        savings: parseSavings(strategy.potentialSavings)
+    })).filter(item => item.savings > 0);
+
   return (
     <div className="container mx-auto px-4 sm:px-6 py-12">
       <Card className="max-w-4xl mx-auto shadow-xl">
@@ -45,6 +67,34 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
               </ul>
             </div>
           </div>
+          
+           {chartData.length > 0 && (
+            <div>
+                 <h3 className="text-2xl font-bold text-gray-800 mb-4">Potential Savings Visualization</h3>
+                 <Card className="p-4">
+                     <ChartContainer config={{}} className="min-h-[200px] w-full">
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 5, left: 20 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} interval={0} tick={{fontSize: 12}} />
+                                <YAxis tickFormatter={(value) => `$${value.toLocaleString()}`} />
+                                <Tooltip
+                                    content={<ChartTooltipContent
+                                        formatter={(value, name) => (
+                                            <>
+                                                <div className="font-semibold">{name}</div>
+                                                <div className="text-sm text-muted-foreground">Potential Savings: ${Number(value).toLocaleString()}</div>
+                                            </>
+                                        )}
+                                    />}
+                                />
+                                <Bar dataKey="savings" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </ChartContainer>
+                 </Card>
+            </div>
+           )}
 
           <div>
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Recommended Strategies</h3>
