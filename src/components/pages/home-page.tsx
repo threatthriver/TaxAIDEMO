@@ -108,7 +108,7 @@ export default function HomePage({ setPage }: HomePageProps) {
                 </div>
                  <div className="flex flex-col items-center">
                     <Image
-                        src="https://placehold.co/200x200.png"
+                        src="https://images.unsplash.com/photo-1651581947248-40776e9b6578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxNnx8RGF2aWQlMjBDaGVufGVufDB8fHx8MTc1Mzk2MjgyNXww&ixlib=rb-4.1.0&q=80&w=1080"
                         alt="Team member photo"
                         width={150}
                         height={150}
