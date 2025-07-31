@@ -97,12 +97,11 @@ export default function HomePage({ setPage }: HomePageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
                 <div className="flex flex-col items-center">
                     <Image
-                        src="https://placehold.co/200x200.png"
+                        src="https://images.unsplash.com/photo-1535169053700-7614fe5dbd72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMnx8SmVzc2ljYXxlbnwwfHx8fDE3NTM5NjI3NzZ8MA&ixlib=rb-4.1.0&q=80&w=1080"
                         alt="Team member photo"
                         width={150}
                         height={150}
                         className="rounded-full shadow-lg"
-                        data-ai-hint="portrait professional"
                     />
                     <h3 className="text-xl font-semibold mt-4">Jessica Miller</h3>
                     <p className="text-muted-foreground">Lead Tax Attorney, CPA</p>
