@@ -1,10 +1,10 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800">
+    <footer className="bg-background border-t">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">TaxAI</h2>
+            <h2 className="text-lg font-semibold text-foreground">TaxAI</h2>
             <p className="text-sm mt-2 text-muted-foreground">Automated tax planning powered by AI.</p>
           </div>
           <div>

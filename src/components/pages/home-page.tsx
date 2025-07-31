@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check, ClipboardList, FileText, Users, Calculator, FileDown } from 'lucide-react';
+import { Check, ClipboardList, FileText, Users, Calculator, FileDown, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 
 
@@ -86,65 +86,20 @@ export default function HomePage({ setPage }: HomePageProps) {
           </div>
         </div>
       </section>
-      
-      {/* Our Experts Section */}
-       <section className="py-20 md:py-24 bg-card">
+
+      {/* CTA Section */}
+      <section className="py-20 md:py-24 bg-card">
         <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-bold text-foreground">Backed by a Team of Professionals</h2>
+            <h2 className="text-4xl font-bold text-foreground">Ready to Take Control of Your Taxes?</h2>
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">
-                Our AI is powerful, but our human experts ensure you're never alone when tackling complex financial scenarios.
+                Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
-                <div className="flex flex-col items-center">
-                    <Image
-                        src="https://images.unsplash.com/photo-1535169053700-7614fe5dbd72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMnx8SmVzc2ljYXxlbnwwfHx8fDE3NTM5NjI3NzZ8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                        alt="Team member photo"
-                        width={150}
-                        height={150}
-                        className="rounded-full shadow-lg"
-                    />
-                    <h3 className="text-xl font-semibold mt-4">Jessica Miller</h3>
-                    <p className="text-muted-foreground">Lead Tax Attorney, CPA</p>
-                </div>
-                 <div className="flex flex-col items-center">
-                    <Image
-                        src="https://images.unsplash.com/photo-1651581947248-40776e9b6578?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxNnx8RGF2aWQlMjBDaGVufGVufDB8fHx8MTc1Mzk2MjgyNXww&ixlib=rb-4.1.0&q=80&w=1080"
-                        alt="Team member photo"
-                        width={150}
-                        height={150}
-                        className="rounded-full shadow-lg"
-                        data-ai-hint="portrait professional"
-                    />
-                    <h3 className="text-xl font-semibold mt-4">David Chen</h3>
-                    <p className="text-muted-foreground">Senior Financial Analyst</p>
-                </div>
-                <div className="flex flex-col items-center">
-                    <Image
-                        src="https://placehold.co/200x200.png"
-                        alt="Team member photo"
-                        width={150}
-                        height={150}
-                        className="rounded-full shadow-lg"
-                        data-ai-hint="portrait professional"
-                    />
-                    <h3 className="text-xl font-semibold mt-4">Sarah Patel</h3>
-                    <p className="text-muted-foreground">Client Success Manager</p>
-                </div>
-                <div className="flex flex-col items-center">
-                    <Image
-                        src="https://placehold.co/200x200.png"
-                        alt="Team member photo"
-                        width={150}
-                        height={150}
-                        className="rounded-full shadow-lg"
-                        data-ai-hint="portrait professional"
-                    />
-                    <h3 className="text-xl font-semibold mt-4">Michael Rodriguez</h3>
-                    <p className="text-muted-foreground">Corporate Tax Specialist</p>
-                </div>
-            </div>
+            <Button onClick={() => setPage('planner')} size="lg" className="mt-8 px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+              Start My Free Analysis
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
         </div>
-    </section>
+      </section>
     </>
   );
 }
