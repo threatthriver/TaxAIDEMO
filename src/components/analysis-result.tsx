@@ -38,7 +38,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
       <Card className="max-w-4xl mx-auto shadow-xl">
         <CardHeader>
           <div className="flex justify-between items-start mb-4 flex-wrap gap-4">
-            <CardTitle className="text-3xl font-bold">Your AI-Generated Tax Plan</CardTitle>
+            <CardTitle className="text-3xl font-bold">Your AI-Generated Financial Plan</CardTitle>
             <Button onClick={onReset} variant="outline">
               Start New Analysis
             </Button>
@@ -50,10 +50,19 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
             <p className="text-primary/90">{result.executiveSummary}</p>
           </div>
 
+          <div className="bg-gray-50 p-6 rounded-lg border">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Financial Health Summary</h3>
+            <p className="text-gray-700">{result.financialHealthSummary}</p>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-gray-50 p-4 rounded-lg border">
-              <h4 className="font-bold text-gray-700 mb-2">Document Type Identified</h4>
-              <p className="font-code bg-gray-200 text-gray-800 inline-block px-2 py-1 rounded">{result.documentType}</p>
+              <h4 className="font-bold text-gray-700 mb-2">Documents Analyzed</h4>
+              <div className="flex flex-wrap gap-2">
+                {result.documentTypes?.map((docType, index) => (
+                    <p key={index} className="font-code bg-gray-200 text-gray-800 inline-block px-2 py-1 rounded text-sm">{docType}</p>
+                ))}
+              </div>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg border">
               <h4 className="font-bold text-gray-700 mb-2">Key Figures Extracted</h4>
@@ -97,7 +106,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
            )}
 
           <div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Recommended Strategies</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4">Recommended Tax Strategies</h3>
             <Accordion type="single" collapsible className="w-full space-y-3">
               {result.strategies?.map((strategy, index) => (
                 <AccordionItem value={`item-${index}`} key={index} className="border-b-0 border rounded-lg bg-white overflow-hidden">

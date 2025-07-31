@@ -13,10 +13,10 @@ import {z} from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
 
 const AnalyzeTaxDocumentInputSchema = z.object({
-  fileDataUri: z
-    .string()
+  fileDataUris: z
+    .array(z.string())
     .describe(
-      "A tax document, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+      "A list of tax documents, each as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
   country: z.string().describe('The country of residence for tax purposes.'),
   analysisType: z.string().describe('The type of analysis requested (Individual/Personal, Small Business/LLC, Corporation).'),
@@ -24,13 +24,14 @@ const AnalyzeTaxDocumentInputSchema = z.object({
 export type AnalyzeTaxDocumentInput = z.infer<typeof AnalyzeTaxDocumentInputSchema>;
 
 const AnalyzeTaxDocumentOutputSchema = z.object({
-  documentType: z.string().describe('The type of document identified by the AI.'),
+  documentTypes: z.array(z.string()).describe('The types of documents identified by the AI.'),
   keyFigures: z.array(
     z.object({
       name: z.string().describe('The name of the key figure.'),
       value: z.string().describe('The value of the key figure.'),
     })
-  ).describe('Key financial figures extracted from the document.'),
+  ).describe('Key financial figures extracted from the documents.'),
+  financialHealthSummary: z.string().describe('A narrative summary of the client\'s overall financial health based on all provided documents.'),
   executiveSummary: z.string().describe('A brief, high-level summary of the findings and total potential savings.'),
   strategies: z.array(
     z.object({
@@ -57,13 +58,15 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   async ( input ) => {
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-pro'),
-      prompt: `You are an expert tax consultant for ${input.country}. Analyze the provided financial document for a client requesting a "${input.analysisType}" analysis. Based on the document's content, provide a detailed, actionable tax-saving plan.
+      prompt: `You are an expert tax consultant and financial analyst for ${input.country}. Analyze the provided financial documents for a client requesting a "${input.analysisType}" analysis. Based on a holistic review of all documents, provide a detailed, actionable tax-saving plan and a financial health assessment.
 
 **Instructions:**
-1. **Identify Document Type:** First, identify the type of document provided.
-2. **Extract Key Figures:** Extract the most relevant financial figures.
-3. **Generate Strategies:** Based on the figures, generate a list of specific, actionable tax-saving strategies relevant to ${input.country}'s tax laws. For each strategy, you MUST estimate the potential annual savings as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
-4. **Analyze Document:** Analyze the following document: ${input.fileDataUri}
+1.  **Identify Document Types:** First, identify the type of each document provided.
+2.  **Extract Key Figures:** Consolidate and extract the most relevant financial figures from all documents.
+3.  **Assess Financial Health:** Write a narrative "Financial Health Summary" that describes the client's overall financial situation. This should synthesize information from all documents to provide a clear picture of their financial strengths and weaknesses.
+4.  **Generate Executive Summary:** Create a brief, high-level summary of the key findings and total potential tax savings.
+5.  **Develop Tax Strategies:** Based on the consolidated figures, generate a list of specific, actionable tax-saving strategies relevant to ${input.country}'s tax laws. For each strategy, you MUST estimate the potential annual savings as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
+6.  **Analyze Documents:** Analyze the following documents: ${input.fileDataUris.join(' ')}
 `,
       output: {
         schema: AnalyzeTaxDocumentOutputSchema

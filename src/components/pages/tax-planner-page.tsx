@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, XCircle, File as FileIcon } from 'lucide-react';
 
 import { analyzeTaxDocument, type AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
 import LoadingState from '@/components/loading-state';
@@ -22,8 +22,7 @@ const fileToDataUri = (file: File): Promise<string> => new Promise((resolve, rej
 });
 
 export default function TaxPlannerPage() {
-    const [file, setFile] = useState<File | null>(null);
-    const [fileName, setFileName] = useState('');
+    const [files, setFiles] = useState<File[]>([]);
     const [country, setCountry] = useState('United States');
     const [analysisType, setAnalysisType] = useState('Individual / Personal');
     const [analysisResult, setAnalysisResult] = useState<AnalyzeTaxDocumentOutput | null>(null);
@@ -31,27 +30,28 @@ export default function TaxPlannerPage() {
     const { toast } = useToast();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-            setFile(selectedFile);
-            setFileName(selectedFile.name);
+        if (e.target.files) {
+            setFiles(prevFiles => [...prevFiles, ...Array.from(e.target.files!)]);
         }
+    };
+
+    const handleRemoveFile = (index: number) => {
+        setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
     };
     
     const resetState = () => {
-        setFile(null);
-        setFileName('');
+        setFiles([]);
         setAnalysisResult(null);
         setLoading(false);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!file) {
+        if (files.length === 0) {
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: 'Please upload a file first.',
+                description: 'Please upload at least one file.',
             });
             return;
         }
@@ -59,10 +59,10 @@ export default function TaxPlannerPage() {
         setAnalysisResult(null);
 
         try {
-            const fileDataUri = await fileToDataUri(file);
+            const fileDataUris = await Promise.all(files.map(fileToDataUri));
 
             const result = await analyzeTaxDocument({
-                fileDataUri,
+                fileDataUris,
                 country,
                 analysisType,
             });
@@ -72,7 +72,7 @@ export default function TaxPlannerPage() {
              toast({
                 variant: 'destructive',
                 title: 'Analysis Failed',
-                description: err.message || 'An unknown error occurred. Please try a different document or check the file format.',
+                description: err.message || 'An unknown error occurred. Please try different documents or check the file formats.',
             });
             console.error(err);
         } finally {
@@ -112,22 +112,34 @@ export default function TaxPlannerPage() {
                             </Select>
                         </div>
                         
-                        <div className="space-y-2">
-                             <Label className="text-lg font-bold">2. Upload Document</Label>
-                            <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="space-y-4">
+                             <Label className="text-lg font-bold">2. Upload Documents</Label>
+                            <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                     <UploadCloud className="h-10 w-10 mb-3 text-gray-400" />
-                                    {fileName ? (
-                                        <p className="text-base font-semibold text-green-600">{fileName}</p>
-                                    ) : (
-                                        <>
-                                            <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
-                                            <p className="text-xs text-gray-500">PDF, PNG, JPG, JPEG</p>
-                                        </>
-                                    )}
+                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
+                                    <p className="text-xs text-gray-500">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
                                 </div>
-                                <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" />
+                                <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" multiple />
                             </Label>
+                             {files.length > 0 && (
+                                <div className="space-y-2">
+                                    <h4 className="font-semibold text-muted-foreground">Selected Files:</h4>
+                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        {files.map((file, index) => (
+                                            <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded-md">
+                                                <div className="flex items-center gap-2 overflow-hidden">
+                                                    <FileIcon className="h-5 w-5 text-gray-500 flex-shrink-0" />
+                                                    <span className="truncate text-sm">{file.name}</span>
+                                                </div>
+                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleRemoveFile(index)}>
+                                                    <XCircle className="h-4 w-4 text-red-500" />
+                                                </Button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -145,8 +157,8 @@ export default function TaxPlannerPage() {
                         </div>
 
                         <div className="pt-4 text-center">
-                            <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading || !file}>
-                                Generate My Tax Plan
+                            <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading || files.length === 0}>
+                                Generate My Financial Plan
                             </Button>
                         </div>
                     </form>
