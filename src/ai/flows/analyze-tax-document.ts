@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 const AnalyzeTaxDocumentInputSchema = z.object({
   fileDataUri: z
@@ -47,49 +48,28 @@ export async function analyzeTaxDocument(input: AnalyzeTaxDocumentInput): Promis
   return analyzeTaxDocumentFlow(input);
 }
 
-const prompt = ai.definePrompt({
-  name: 'analyzeTaxDocumentPrompt',
-  input: {schema: AnalyzeTaxDocumentInputSchema},
-  output: {schema: AnalyzeTaxDocumentOutputSchema},
-  prompt: `You are an expert tax consultant for {{{country}}}. Analyze the provided financial document for a client requesting a "{{{analysisType}}}" analysis. Based on the document's content, provide a detailed, actionable tax-saving plan.
-
-**Instructions:**
-1. **Identify Document Type:** First, identify the type of document provided.
-2. **Extract Key Figures:** Extract the most relevant financial figures.
-3. **Generate Strategies:** Based on the figures, generate a list of specific, actionable tax-saving strategies relevant to {{{country}}}'s tax laws. For each strategy, you MUST estimate the potential annual savings as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
-4. **Use Search:** Use your search tool to find the most up-to-date tax laws and regulations to ensure your advice is accurate.
-
-**Structure the Output:** Return the analysis as a JSON object with the following structure:
-\`\`\`
-{
-  "documentType": "Detected document type",
-  "keyFigures": [
-    { "name": "Figure Name 1", "value": "Figure Value 1" }
-  ],
-  "executiveSummary": "A brief, high-level summary of the findings and total potential savings.",
-  "strategies": [
-    {
-      "title": "Strategy Title 1",
-      "description": "Detailed explanation of the strategy.",
-      "action": "Clear, actionable step for the client.",
-      "relevantSection": "Applicable tax law section (e.g., IRC Sec. 401(k) or Income Tax Act, Sec 80C).",
-      "potentialSavings": "Estimated savings string (e.g., '$1,500 - $2,000')"
-    }
-  ]
-}
-\`\`\`
-
-Financial Document: {{media url=fileDataUri}}`,
-});
-
 const analyzeTaxDocumentFlow = ai.defineFlow(
   {
     name: 'analyzeTaxDocumentFlow',
     inputSchema: AnalyzeTaxDocumentInputSchema,
     outputSchema: AnalyzeTaxDocumentOutputSchema,
   },
-  async input => {
-    const {output} = await prompt(input);
+  async ( input ) => {
+    const {output} = await ai.generate({
+      model: googleAI.model('gemini-1.5-pro-latest'),
+      prompt: `You are an expert tax consultant for ${input.country}. Analyze the provided financial document for a client requesting a "${input.analysisType}" analysis. Based on the document's content, provide a detailed, actionable tax-saving plan.
+
+**Instructions:**
+1. **Identify Document Type:** First, identify the type of document provided.
+2. **Extract Key Figures:** Extract the most relevant financial figures.
+3. **Generate Strategies:** Based on the figures, generate a list of specific, actionable tax-saving strategies relevant to ${input.country}'s tax laws. For each strategy, you MUST estimate the potential annual savings as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
+4. **Analyze Document:** Analyze the following document: ${input.fileDataUri}
+`,
+      output: {
+        schema: AnalyzeTaxDocumentOutputSchema
+      }
+    });
+
     return output!;
   }
 );

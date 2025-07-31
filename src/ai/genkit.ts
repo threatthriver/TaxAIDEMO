@@ -1,8 +1,8 @@
+'use server';
 import {genkit} from 'genkit';
-import {googleAI, googleSearch} from '@genkit-ai/googleai';
+import {googleAI} from '@genkit-ai/googleai';
 
 export const ai = genkit({
-  plugins: [googleAI({tools: [googleSearch]})],
-  model: 'googleai/gemini-2.5-pro',
+  plugins: [googleAI()],
   allowLocalFiles: true,
 });
