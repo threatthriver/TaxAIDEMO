@@ -5,11 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ClipboardList, FileText, Users, Calculator, FileDown, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-
-type HomePageProps = {
-  setPage: (page: 'planner') => void;
-};
 
 const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: string; children: React.ReactNode }) => (
   <Card className="bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary">
@@ -25,11 +22,11 @@ const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: 
   </Card>
 );
 
-export default function HomePage({ setPage }: HomePageProps) {
+export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-card">
+      <section className="bg-card pt-10 md:pt-0">
         <div className="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="text-left">
             <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">
@@ -41,9 +38,11 @@ export default function HomePage({ setPage }: HomePageProps) {
             <p className="max-w-2xl text-lg text-muted-foreground mb-10">
               For individuals, businesses, and corporations. Create multi-entity and multi-year plans with a single click, backed by instant calculations for over 60 tax-saving strategies.
             </p>
-            <Button onClick={() => setPage('planner')} size="lg" className="px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
-              Create My Tax Plan
-            </Button>
+            <Link href="/planner">
+              <Button size="lg" className="px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                Create My Tax Plan
+              </Button>
+            </Link>
           </div>
           <div className="relative hidden md:block">
              <Image 
@@ -95,10 +94,12 @@ export default function HomePage({ setPage }: HomePageProps) {
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
-            <Button onClick={() => setPage('planner')} size="lg" className="mt-8 px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
-              Start My Free Analysis
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/planner">
+              <Button size="lg" className="mt-8 px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                Start My Free Analysis
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
         </div>
       </section>
     </>

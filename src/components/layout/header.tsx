@@ -1,52 +1,56 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, ShieldCheck } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-type HeaderProps = {
-  setPage: (page: 'home' | 'planner') => void;
-};
-
-export default function Header({ setPage }: HeaderProps) {
+export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const Logo = () => (
-    <div
+    <Link
+      href="/"
       className="text-2xl font-bold cursor-pointer flex items-center gap-2"
-      onClick={() => {
-        setPage('home');
-        setIsMenuOpen(false);
-      }}
+      onClick={() => setIsMenuOpen(false)}
     >
       <ShieldCheck className="h-8 w-8 text-primary"/>
       <span className="text-foreground">Tax</span>
       <span className="font-light text-muted-foreground">AI</span>
-    </div>
+    </Link>
   );
 
   const navLinks = (
     <>
-      <a
-        href="#"
-        onClick={(e) => {
-          e.preventDefault();
-          setPage('planner');
-          setIsMenuOpen(false);
-        }}
+      <Link
+        href="/planner"
+        onClick={() => setIsMenuOpen(false)}
         className="text-muted-foreground hover:text-primary font-medium transition-colors"
       >
         Tax Planner
-      </a>
-      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">Solutions</a>
-      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">Pricing</a>
-      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">About</a>
+      </Link>
+      <Link href="/solutions" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">Solutions</Link>
+      <Link href="/pricing" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">Pricing</Link>
+      <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">About</Link>
     </>
   );
 
   return (
-    <header className="bg-card/80 backdrop-blur-lg border-b sticky top-0 z-50">
+    <header className={cn(
+      "sticky top-0 z-50 transition-all duration-300",
+      isScrolled ? "bg-card/80 backdrop-blur-lg border-b" : "bg-transparent"
+    )}>
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
