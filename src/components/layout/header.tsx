@@ -14,15 +14,15 @@ export default function Header({ setPage }: HeaderProps) {
 
   const Logo = () => (
     <div
-      className="text-2xl font-bold text-gray-800 cursor-pointer flex items-center gap-2"
+      className="text-2xl font-bold cursor-pointer flex items-center gap-2"
       onClick={() => {
         setPage('home');
         setIsMenuOpen(false);
       }}
     >
       <ShieldCheck className="h-8 w-8 text-primary"/>
-      <span className="text-gray-900">Tax</span>
-      <span className="font-light text-gray-700">Planner AI</span>
+      <span className="text-foreground">Tax</span>
+      <span className="font-light text-muted-foreground">AI</span>
     </div>
   );
 
@@ -35,23 +35,24 @@ export default function Header({ setPage }: HeaderProps) {
           setPage('planner');
           setIsMenuOpen(false);
         }}
-        className="text-gray-600 hover:text-primary font-semibold transition-colors"
+        className="text-muted-foreground hover:text-primary font-medium transition-colors"
       >
-        Planner Suite
+        Tax Planner
       </a>
-      <a href="#" className="text-gray-600 hover:text-primary font-semibold transition-colors">Solutions</a>
-      <a href="#" className="text-gray-600 hover:text-primary font-semibold transition-colors">Pricing</a>
+      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">Solutions</a>
+      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">Pricing</a>
+      <a href="#" className="text-muted-foreground hover:text-primary font-medium transition-colors">About</a>
     </>
   );
 
   return (
-    <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+    <header className="bg-card/80 backdrop-blur-lg border-b sticky top-0 z-50">
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" className="text-primary hover:text-primary">Client Login</Button>
-          <Button>Request a Demo</Button>
+          <Button variant="ghost">Log In</Button>
+          <Button>Sign Up Free</Button>
         </div>
         <div className="md:hidden">
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -68,8 +69,8 @@ export default function Header({ setPage }: HeaderProps) {
                 </div>
                 <div className="flex flex-col space-y-6 text-lg">{navLinks}</div>
                 <div className="mt-8 flex flex-col space-y-4">
-                  <Button variant="ghost" className="text-primary hover:text-primary">Client Login</Button>
-                  <Button>Request a Demo</Button>
+                  <Button variant="ghost">Log In</Button>
+                  <Button>Sign Up Free</Button>
                 </div>
               </div>
             </SheetContent>

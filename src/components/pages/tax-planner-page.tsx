@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -95,12 +96,12 @@ export default function TaxPlannerPage() {
     return (
         <div className="bg-background min-h-[calc(100vh-80px)] py-12">
             <div className="container mx-auto px-4 sm:px-6">
-                <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary">
-                    <CardHeader className="text-center">
+                <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary bg-card">
+                    <CardHeader className="text-center p-8">
                         <CardTitle className="text-3xl font-bold">Comprehensive Tax Analysis Suite</CardTitle>
                         <CardDescription className="text-lg text-muted-foreground pt-2">Upload your financial documents and let our AI do the work.</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-8">
                         <form onSubmit={handleSubmit} className="space-y-8">
                             <div className="grid md:grid-cols-2 gap-6">
                                <div className="space-y-2">
@@ -122,7 +123,7 @@ export default function TaxPlannerPage() {
                                     <Select value={analysisType} onValueChange={setAnalysisType}>
                                          <SelectTrigger className="w-full h-12 text-base">
                                             <SelectValue placeholder="Select analysis type" />
-                                        </SelectTrigger>
+                                        </Trigger>
                                         <SelectContent>
                                             <SelectItem value="Individual / Personal">Individual / Personal</SelectItem>
                                             <SelectItem value="Small Business / LLC">Small Business / LLC</SelectItem>
@@ -134,11 +135,11 @@ export default function TaxPlannerPage() {
                             
                             <div className="space-y-4">
                                  <Label className="text-base font-semibold">3. Upload Documents</Label>
-                                <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg hover:bg-muted/50 transition-colors">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <UploadCloud className="h-10 w-10 mb-3 text-gray-400" />
-                                        <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-gray-500">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
+                                        <UploadCloud className="h-10 w-10 mb-3 text-muted-foreground" />
+                                        <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
+                                        <p className="text-xs text-muted-foreground">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
                                     </div>
                                     <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" multiple />
                                 </Label>
@@ -147,9 +148,9 @@ export default function TaxPlannerPage() {
                                         <h4 className="font-semibold text-muted-foreground">Selected Files:</h4>
                                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                             {files.map((file, index) => (
-                                                <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded-md border">
+                                                <li key={index} className="flex items-center justify-between bg-secondary p-2 rounded-md border">
                                                     <div className="flex items-center gap-2 overflow-hidden">
-                                                        <FileIcon className="h-5 w-5 text-gray-500 flex-shrink-0" />
+                                                        <FileIcon className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                                                         <span className="truncate text-sm">{file.name}</span>
                                                     </div>
                                                     <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleRemoveFile(index)}>

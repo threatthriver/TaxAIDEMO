@@ -83,7 +83,7 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
         <div className="fixed bottom-6 right-6 z-50">
             {isOpen && (
                 <Card className="w-96 h-[60vh] flex flex-col shadow-2xl rounded-xl border-2 border-primary/20">
-                    <CardHeader className="bg-primary/90 text-primary-foreground p-4 rounded-t-lg">
+                    <CardHeader className="bg-primary text-primary-foreground p-4 rounded-t-lg">
                         <CardTitle className="text-lg flex items-center gap-2">
                            <Bot /> AI Financial Assistant
                         </CardTitle>
@@ -94,16 +94,16 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                                 {messages.map((msg, index) => (
                                     <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                                         {msg.role === 'model' && <Bot className="h-6 w-6 text-primary flex-shrink-0" />}
-                                        <div className={`rounded-lg px-4 py-2 max-w-xs text-sm ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-gray-100 text-gray-800'}`}>
+                                        <div className={`rounded-lg px-4 py-2 max-w-xs text-sm ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                                             {msg.content}
                                         </div>
-                                         {msg.role === 'user' && <User className="h-6 w-6 text-gray-600 flex-shrink-0" />}
+                                         {msg.role === 'user' && <User className="h-6 w-6 text-muted-foreground flex-shrink-0" />}
                                     </div>
                                 ))}
                                 {loading && (
                                     <div className="flex items-start gap-3">
                                         <Bot className="h-6 w-6 text-primary flex-shrink-0" />
-                                        <div className="rounded-lg px-4 py-2 max-w-xs text-sm bg-gray-100 text-gray-800">
+                                        <div className="rounded-lg px-4 py-2 max-w-xs text-sm bg-secondary text-secondary-foreground">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                                                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-75"></div>
@@ -134,9 +134,9 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
              <Button
                 size="lg"
                 onClick={() => setIsOpen(prev => !prev)}
-                className="rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
+                className="rounded-full w-20 h-20 shadow-lg flex items-center justify-center"
             >
-                <MessageSquare className="h-8 w-8" />
+                <MessageSquare className="h-10 w-10" />
             </Button>
         </div>
     );
@@ -195,16 +195,14 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                     Download PDF
                 </Button>
             </div>
-          <Card className="shadow-2xl border-t-4 border-primary" ref={printRef}>
-            <CardHeader>
-              <div className="flex justify-between items-start flex-wrap gap-4">
-                <CardTitle className="text-3xl font-bold">Your AI-Generated Financial Plan</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-10">
-              <Card className="bg-primary/5 border-primary/20">
+          <div ref={printRef} className="bg-card p-6 sm:p-10 rounded-xl shadow-lg">
+            <header className="mb-10">
+              <h1 className="text-4xl font-extrabold text-foreground">Your AI-Generated Financial Plan</h1>
+            </header>
+            <main className="space-y-12">
+              <Card className="bg-primary/5 border-primary/20 ring-1 ring-primary/20">
                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-primary text-2xl">
+                    <CardTitle className="flex items-center gap-3 text-primary text-2xl">
                         <Lightbulb />
                         Executive Summary
                     </CardTitle>
@@ -217,13 +215,13 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
               {result.whatIfAnalysis && (
                 <Card className="bg-secondary/50 border-secondary/20">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-gray-800 text-2xl">
+                        <CardTitle className="flex items-center gap-2 text-foreground text-2xl">
                             <HelpCircle />
                             "What-If" Scenario Analysis
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-gray-700 leading-relaxed">{result.whatIfAnalysis}</p>
+                        <p className="text-muted-foreground leading-relaxed">{result.whatIfAnalysis}</p>
                     </CardContent>
                 </Card>
               )}
@@ -231,33 +229,33 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
 
               <Card>
                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-800 text-2xl">
+                    <CardTitle className="flex items-center gap-2 text-foreground text-2xl">
                         <TrendingUp />
                         Financial Health Summary
                     </CardTitle>
                  </CardHeader>
                  <CardContent>
-                    <p className="text-gray-700 leading-relaxed">{result.financialHealthSummary}</p>
+                    <p className="text-muted-foreground leading-relaxed">{result.financialHealthSummary}</p>
                  </CardContent>
               </Card>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-8">
                 <Card className="flex-1">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-700 text-xl">
+                    <CardTitle className="flex items-center gap-2 text-foreground/80 text-xl">
                         <FileText/>
                         Documents Analyzed
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
                     {result.documentTypes?.map((docType, index) => (
-                        <p key={index} className="font-code bg-gray-100 text-gray-800 inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
+                        <p key={index} className="font-code bg-secondary text-secondary-foreground inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
                     ))}
                   </CardContent>
                 </Card>
                 <Card className="flex-1">
                   <CardHeader>
-                    <CardTitle className="text-gray-700 text-xl">Key Figures</CardTitle>
+                    <CardTitle className="text-foreground/80 text-xl">Key Figures</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
@@ -275,7 +273,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                {chartData.length > 0 && (
                  <Card>
                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold text-gray-800">Potential Savings Visualization</CardTitle>
+                        <CardTitle className="text-2xl font-bold text-foreground">Potential Savings Visualization</CardTitle>
                     </CardHeader>
                     <CardContent>
                          <ChartContainer config={{}} className="min-h-[250px] w-full">
@@ -289,7 +287,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                                         content={<ChartTooltipContent
                                             formatter={(value) => (`$${Number(value).toLocaleString()}`)}
                                             labelClassName="font-bold"
-                                            className="bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border"
+                                            className="bg-card/80 backdrop-blur-sm rounded-lg shadow-lg border"
                                         />}
                                     />
                                     <Bar dataKey="savings" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
@@ -301,7 +299,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                )}
 
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-800 mb-2">Your Action Plan</CardTitle>
+                <CardTitle className="text-2xl font-bold text-foreground mb-2">Your Action Plan</CardTitle>
                 <CardDescription className="mb-4">Check off these items as you complete them.</CardDescription>
                 
                 <div className="space-y-4">
@@ -311,7 +309,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                   </div>
                   <div className="space-y-3">
                       {result.strategies?.map((strategy) => (
-                          <Card key={strategy.title} className={`p-4 border rounded-lg transition-all ${checkedStrategies[strategy.title] ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
+                          <Card key={strategy.title} className={`p-4 border rounded-lg transition-all ${checkedStrategies[strategy.title] ? 'bg-green-50 border-green-200' : 'bg-card'}`}>
                               <div className="flex items-start gap-4">
                                   <Checkbox 
                                       id={strategy.title} 
@@ -322,12 +320,12 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                                   <div className="flex-1">
                                       <label 
                                           htmlFor={strategy.title} 
-                                          className={`font-semibold text-lg text-primary cursor-pointer ${checkedStrategies[strategy.title] ? 'line-through text-gray-500' : ''}`}
+                                          className={`font-semibold text-lg text-primary cursor-pointer ${checkedStrategies[strategy.title] ? 'line-through text-muted-foreground' : ''}`}
                                       >
                                           {strategy.title}
                                       </label>
                                       <p className={`text-green-600 font-bold ${checkedStrategies[strategy.title] ? 'line-through' : ''}`}>{strategy.potentialSavings}</p>
-                                      <p className={`mt-2 text-gray-700 leading-relaxed ${checkedStrategies[strategy.title] ? 'opacity-70' : ''}`}>{strategy.description}</p>
+                                      <p className={`mt-2 text-muted-foreground leading-relaxed ${checkedStrategies[strategy.title] ? 'opacity-70' : ''}`}>{strategy.description}</p>
                                       <div className={`mt-3 bg-primary/10 p-3 rounded-lg border border-primary/20 ${checkedStrategies[strategy.title] ? 'opacity-60' : ''}`}>
                                           <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
                                           <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
@@ -340,8 +338,8 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </main>
+          </div>
         </div>
       </div>
     </div>

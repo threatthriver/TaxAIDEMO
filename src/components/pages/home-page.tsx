@@ -11,7 +11,7 @@ type HomePageProps = {
 };
 
 const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: string; children: React.ReactNode }) => (
-  <Card className="bg-white p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary">
+  <Card className="bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary">
     <CardHeader className="flex flex-row items-center gap-4">
       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
         {icon}
@@ -28,16 +28,16 @@ export default function HomePage({ setPage }: HomePageProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-white">
+      <section className="bg-card">
         <div className="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="text-left">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">
               Global Tax Planning, <span className="text-primary">Powered by AI.</span>
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium text-gray-700 mb-8 max-w-2xl">
+            <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-8 max-w-2xl">
               Upload financial documents. Get actionable, AI-driven tax strategies for the US, UK, Canada & India.
             </h2>
-            <p className="max-w-2xl text-lg text-gray-600 mb-10">
+            <p className="max-w-2xl text-lg text-muted-foreground mb-10">
               Stop manual data entry. Our AI reads your ITR, Form 1040, P&L statements, and balance sheets to uncover hidden savings for you, your small business, or your large enterprise.
             </p>
             <Button onClick={() => setPage('planner')} size="lg" className="px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
@@ -46,7 +46,7 @@ export default function HomePage({ setPage }: HomePageProps) {
           </div>
           <div className="relative hidden md:block">
              <Image 
-                src="https://images.unsplash.com/photo-1663277627902-c49b3c968570?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOHx8c2F2ZSUyMHlvdXIlMjBNb25leXxlbnwwfHx8fDE3NTM5NTk3NDJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src="https://placehold.co/600x400.png"
                 alt="Tax documents and charts illustration" 
                 width={600} 
                 height={400} 
@@ -61,7 +61,7 @@ export default function HomePage({ setPage }: HomePageProps) {
       <section className="py-20 md:py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900">A Unified Platform for Total Tax Efficiency</h2>
+            <h2 className="text-4xl font-bold text-foreground">A Unified Platform for Total Tax Efficiency</h2>
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">From individual filings to multi-crore enterprises, our AI provides clarity and unlocks potential savings.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
