@@ -57,6 +57,7 @@ const prompt = ai.definePrompt({
 1. **Identify Document Type:** First, identify the type of document provided.
 2. **Extract Key Figures:** Extract the most relevant financial figures.
 3. **Generate Strategies:** Based on the figures, generate a list of specific, actionable tax-saving strategies relevant to {{{country}}}'s tax laws. For each strategy, you MUST estimate the potential annual savings as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
+4. **Use Search:** Use your search tool to find the most up-to-date tax laws and regulations to ensure your advice is accurate.
 
 **Structure the Output:** Return the analysis as a JSON object with the following structure:
 \`\`\`
