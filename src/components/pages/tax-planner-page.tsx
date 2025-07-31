@@ -163,10 +163,10 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="additional-notes" className="text-base font-semibold">4. Additional Notes or Questions (Optional)</Label>
+                              <Label htmlFor="additional-notes" className="text-base font-semibold">4. Additional Notes & "What-If" Scenarios (Optional)</Label>
                               <Textarea
                                   id="additional-notes"
-                                  placeholder="e.g., I'm planning to buy a house this year. How can I prepare? or Focus on deductions for my freelance business."
+                                  placeholder="e.g., What if I contributed an extra $5,000 to my retirement account? or I'm starting a side business, what should I consider?"
                                   value={additionalNotes}
                                   onChange={(e) => setAdditionalNotes(e.target.value)}
                                   className="min-h-[100px] text-base"

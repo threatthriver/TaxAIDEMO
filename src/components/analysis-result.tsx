@@ -1,12 +1,16 @@
 'use client';
 
 import type { AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
+import React, { useState, useRef } from 'react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Progress } from '@/components/ui/progress';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { ArrowLeft, CheckCircle, FileText, Lightbulb, TrendingUp } from 'lucide-react';
+import { ArrowLeft, CheckCircle, FileText, Lightbulb, TrendingUp, Download, HelpCircle } from 'lucide-react';
 
 type AnalysisResultDisplayProps = {
   result: AnalyzeTaxDocumentOutput;
@@ -28,6 +32,37 @@ const parseSavings = (savings: string): number => {
 
 
 export default function AnalysisResultDisplay({ result, onReset }: AnalysisResultDisplayProps) {
+    const [checkedStrategies, setCheckedStrategies] = useState<Record<string, boolean>>({});
+    const printRef = useRef<HTMLDivElement>(null);
+
+    const handleCheckboxChange = (title: string) => {
+        setCheckedStrategies(prev => ({ ...prev, [title]: !prev[title] }));
+    };
+
+    const completedCount = Object.values(checkedStrategies).filter(Boolean).length;
+    const progressPercentage = result.strategies.length > 0 ? (completedCount / result.strategies.length) * 100 : 0;
+    
+    const handleDownloadPdf = async () => {
+        const element = printRef.current;
+        if (!element) return;
+    
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            logging: true,
+            useCORS: true,
+            backgroundColor: null
+        });
+        
+        const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'px',
+            format: [canvas.width, canvas.height]
+        });
+        
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('Tax-Analysis-Report.pdf');
+    };
+
     const chartData = result.strategies.map(strategy => ({
         name: strategy.title,
         savings: parseSavings(strategy.potentialSavings)
@@ -37,11 +72,17 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     <div className="bg-background min-h-screen py-12">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="max-w-5xl mx-auto">
-           <Button onClick={onReset} variant="outline" className="mb-6">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Start New Analysis
-            </Button>
-          <Card className="shadow-2xl border-t-4 border-primary">
+            <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+                <Button onClick={onReset} variant="outline">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Start New Analysis
+                </Button>
+                <Button onClick={handleDownloadPdf} variant="default">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download PDF
+                </Button>
+            </div>
+          <Card className="shadow-2xl border-t-4 border-primary" ref={printRef}>
             <CardHeader>
               <div className="flex justify-between items-start flex-wrap gap-4">
                 <CardTitle className="text-3xl font-bold">Your AI-Generated Financial Plan</CardTitle>
@@ -59,6 +100,21 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                     <p className="text-lg text-primary/90">{result.executiveSummary}</p>
                  </CardContent>
               </Card>
+              
+              {result.whatIfAnalysis && (
+                <Card className="bg-secondary/50 border-secondary/20">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-gray-800 text-2xl">
+                            <HelpCircle />
+                            "What-If" Scenario Analysis
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-gray-700 leading-relaxed">{result.whatIfAnalysis}</p>
+                    </CardContent>
+                </Card>
+              )}
+
 
               <Card>
                  <CardHeader>
@@ -132,25 +188,44 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                )}
 
               <div>
-                <CardTitle className="text-2xl font-bold text-gray-800 mb-4">Recommended Tax Strategies</CardTitle>
-                <Accordion type="single" collapsible className="w-full space-y-3">
-                  {result.strategies?.map((strategy, index) => (
-                    <AccordionItem value={`item-${index}`} key={index} className="border-b-0 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
-                      <AccordionTrigger className="w-full flex justify-between items-center p-4 text-left hover:no-underline">
-                        <span className="font-semibold text-primary text-lg">{strategy.title}</span>
-                         <span className="text-lg font-bold text-green-600 mr-4 whitespace-nowrap">{strategy.potentialSavings}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="p-4 bg-gray-50/50 border-t">
-                        <p className="text-gray-700 mb-4 leading-relaxed">{strategy.description}</p>
-                        <div className="bg-primary/10 p-4 rounded-lg border border-primary/20">
-                          <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
-                          <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-4 font-code">Relevant Section: {strategy.relevantSection}</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
+                <CardTitle className="text-2xl font-bold text-gray-800 mb-2">Your Action Plan</CardTitle>
+                <CardDescription className="mb-4">Check off these items as you complete them.</CardDescription>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                      <Progress value={progressPercentage} className="w-full h-3" />
+                      <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">{completedCount} / {result.strategies.length} Completed</span>
+                  </div>
+                  <div className="space-y-3">
+                      {result.strategies?.map((strategy) => (
+                          <Card key={strategy.title} className={`p-4 border rounded-lg transition-all ${checkedStrategies[strategy.title] ? 'bg-green-50 border-green-200' : 'bg-white'}`}>
+                              <div className="flex items-start gap-4">
+                                  <Checkbox 
+                                      id={strategy.title} 
+                                      checked={checkedStrategies[strategy.title] || false}
+                                      onCheckedChange={() => handleCheckboxChange(strategy.title)}
+                                      className="mt-1 h-5 w-5"
+                                  />
+                                  <div className="flex-1">
+                                      <label 
+                                          htmlFor={strategy.title} 
+                                          className={`font-semibold text-lg text-primary cursor-pointer ${checkedStrategies[strategy.title] ? 'line-through text-gray-500' : ''}`}
+                                      >
+                                          {strategy.title}
+                                      </label>
+                                      <p className={`text-green-600 font-bold ${checkedStrategies[strategy.title] ? 'line-through' : ''}`}>{strategy.potentialSavings}</p>
+                                      <p className={`mt-2 text-gray-700 leading-relaxed ${checkedStrategies[strategy.title] ? 'opacity-70' : ''}`}>{strategy.description}</p>
+                                      <div className={`mt-3 bg-primary/10 p-3 rounded-lg border border-primary/20 ${checkedStrategies[strategy.title] ? 'opacity-60' : ''}`}>
+                                          <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
+                                          <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
+                                      </div>
+                                      <p className="text-xs text-gray-500 mt-3 font-code">Relevant Section: {strategy.relevantSection}</p>
+                                  </div>
+                              </div>
+                          </Card>
+                      ))}
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
