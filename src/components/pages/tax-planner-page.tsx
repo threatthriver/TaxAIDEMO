@@ -93,93 +93,96 @@ export default function TaxPlannerPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 sm:px-6 py-12">
-            <Card className="max-w-4xl mx-auto shadow-xl">
-                <CardHeader>
-                    <CardTitle className="text-3xl font-bold">Comprehensive Tax Analysis Suite</CardTitle>
-                    <CardDescription className="text-lg text-muted-foreground">Upload your financial documents and let our AI do the work.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="space-y-2">
-                            <Label className="text-lg font-bold">1. Select Country</Label>
-                            <Select value={country} onValueChange={setCountry}>
-                                <SelectTrigger className="w-full h-12 text-base">
-                                    <SelectValue placeholder="Select a country" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="United States">United States</SelectItem>
-                                    <SelectItem value="India">India</SelectItem>
-                                    <SelectItem value="United Kingdom">United Kingdom</SelectItem>
-                                    <SelectItem value="Canada">Canada</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        
-                        <div className="space-y-4">
-                             <Label className="text-lg font-bold">2. Upload Documents</Label>
-                            <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <UploadCloud className="h-10 w-10 mb-3 text-gray-400" />
-                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
-                                    <p className="text-xs text-gray-500">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
+        <div className="bg-background min-h-[calc(100vh-80px)] py-12">
+            <div className="container mx-auto px-4 sm:px-6">
+                <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary">
+                    <CardHeader className="text-center">
+                        <CardTitle className="text-3xl font-bold">Comprehensive Tax Analysis Suite</CardTitle>
+                        <CardDescription className="text-lg text-muted-foreground pt-2">Upload your financial documents and let our AI do the work.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={handleSubmit} className="space-y-8">
+                            <div className="grid md:grid-cols-2 gap-6">
+                               <div className="space-y-2">
+                                    <Label className="text-base font-semibold">1. Select Country</Label>
+                                    <Select value={country} onValueChange={setCountry}>
+                                        <SelectTrigger className="w-full h-12 text-base">
+                                            <SelectValue placeholder="Select a country" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="United States">United States</SelectItem>
+                                            <SelectItem value="India">India</SelectItem>
+                                            <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                                            <SelectItem value="Canada">Canada</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-                                <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" multiple />
-                            </Label>
-                             {files.length > 0 && (
                                 <div className="space-y-2">
-                                    <h4 className="font-semibold text-muted-foreground">Selected Files:</h4>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                        {files.map((file, index) => (
-                                            <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded-md">
-                                                <div className="flex items-center gap-2 overflow-hidden">
-                                                    <FileIcon className="h-5 w-5 text-gray-500 flex-shrink-0" />
-                                                    <span className="truncate text-sm">{file.name}</span>
-                                                </div>
-                                                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleRemoveFile(index)}>
-                                                    <XCircle className="h-4 w-4 text-red-500" />
-                                                </Button>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                     <Label className="text-base font-semibold">2. Select Analysis Type</Label>
+                                    <Select value={analysisType} onValueChange={setAnalysisType}>
+                                         <SelectTrigger className="w-full h-12 text-base">
+                                            <SelectValue placeholder="Select analysis type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Individual / Personal">Individual / Personal</SelectItem>
+                                            <SelectItem value="Small Business / LLC">Small Business / LLC</SelectItem>
+                                            <SelectItem value="Corporation">Corporation</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                            
+                            <div className="space-y-4">
+                                 <Label className="text-base font-semibold">3. Upload Documents</Label>
+                                <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                        <UploadCloud className="h-10 w-10 mb-3 text-gray-400" />
+                                        <p className="mb-2 text-sm text-gray-500"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
+                                        <p className="text-xs text-gray-500">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
+                                    </div>
+                                    <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" multiple />
+                                </Label>
+                                 {files.length > 0 && (
+                                    <div className="space-y-2 pt-2">
+                                        <h4 className="font-semibold text-muted-foreground">Selected Files:</h4>
+                                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                            {files.map((file, index) => (
+                                                <li key={index} className="flex items-center justify-between bg-gray-100 p-2 rounded-md border">
+                                                    <div className="flex items-center gap-2 overflow-hidden">
+                                                        <FileIcon className="h-5 w-5 text-gray-500 flex-shrink-0" />
+                                                        <span className="truncate text-sm">{file.name}</span>
+                                                    </div>
+                                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleRemoveFile(index)}>
+                                                        <XCircle className="h-4 w-4 text-red-500" />
+                                                    </Button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
 
-                        <div className="space-y-2">
-                             <Label className="text-lg font-bold">3. Select Analysis Type</Label>
-                            <Select value={analysisType} onValueChange={setAnalysisType}>
-                                 <SelectTrigger className="w-full h-12 text-base">
-                                    <SelectValue placeholder="Select analysis type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Individual / Personal">Individual / Personal</SelectItem>
-                                    <SelectItem value="Small Business / LLC">Small Business / LLC</SelectItem>
-                                    <SelectItem value="Corporation">Corporation</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="additional-notes" className="text-lg font-bold">4. Additional Notes or Questions (Optional)</Label>
-                          <Textarea
-                              id="additional-notes"
-                              placeholder="e.g., I'm planning to buy a house this year. How can I prepare? or Focus on deductions for my freelance business."
-                              value={additionalNotes}
-                              onChange={(e) => setAdditionalNotes(e.target.value)}
-                              className="min-h-[100px] text-base"
-                          />
-                        </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="additional-notes" className="text-base font-semibold">4. Additional Notes or Questions (Optional)</Label>
+                              <Textarea
+                                  id="additional-notes"
+                                  placeholder="e.g., I'm planning to buy a house this year. How can I prepare? or Focus on deductions for my freelance business."
+                                  value={additionalNotes}
+                                  onChange={(e) => setAdditionalNotes(e.target.value)}
+                                  className="min-h-[100px] text-base"
+                              />
+                            </div>
 
 
-                        <div className="pt-4 text-center">
-                            <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading || files.length === 0}>
-                                Generate My Financial Plan
-                            </Button>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
+                            <div className="pt-4 text-center">
+                                <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading || files.length === 0}>
+                                    Generate My Financial Plan
+                                </Button>
+                            </div>
+                        </form>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 }

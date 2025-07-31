@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Menu, ShieldCheck } from 'lucide-react';
 
 type HeaderProps = {
   setPage: (page: 'home' | 'planner') => void;
@@ -20,8 +20,9 @@ export default function Header({ setPage }: HeaderProps) {
         setIsMenuOpen(false);
       }}
     >
-      <span className="text-primary">Tax</span>
-      <span>Planner AI</span>
+      <ShieldCheck className="h-8 w-8 text-primary"/>
+      <span className="text-gray-900">Tax</span>
+      <span className="font-light text-gray-700">Planner AI</span>
     </div>
   );
 
@@ -44,7 +45,7 @@ export default function Header({ setPage }: HeaderProps) {
   );
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
