@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, BarChart, FileText, Globe } from 'lucide-react';
+import { Check, ClipboardList, FileText, Users, Calculator, FileDown } from 'lucide-react';
 import Image from 'next/image';
 
 
@@ -32,16 +32,16 @@ export default function HomePage({ setPage }: HomePageProps) {
         <div className="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="text-left">
             <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">
-              Global Tax Planning, <span className="text-primary">Powered by AI.</span>
+              Automated Tax Planning. <span className="text-primary">Unmatched Savings.</span>
             </h1>
             <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-8 max-w-2xl">
-              Upload financial documents. Get actionable, AI-driven tax strategies for the US, UK, Canada & India.
+              Streamline your tax strategy. Upload documents or fill out our questionnaire to generate a comprehensive, professional tax plan in minutes.
             </h2>
             <p className="max-w-2xl text-lg text-muted-foreground mb-10">
-              Stop manual data entry. Our AI reads your ITR, Form 1040, P&L statements, and balance sheets to uncover hidden savings for you, your small business, or your large enterprise.
+              For individuals, businesses, and corporations. Create multi-entity and multi-year plans with a single click, backed by instant calculations for over 60 tax-saving strategies.
             </p>
             <Button onClick={() => setPage('planner')} size="lg" className="px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
-              Start Your Free Analysis
+              Create My Tax Plan
             </Button>
           </div>
           <div className="relative hidden md:block">
@@ -61,22 +61,91 @@ export default function HomePage({ setPage }: HomePageProps) {
       <section className="py-20 md:py-24 bg-background">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground">A Unified Platform for Total Tax Efficiency</h2>
-            <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">From individual filings to multi-crore enterprises, our AI provides clarity and unlocks potential savings.</p>
+            <h2 className="text-4xl font-bold text-foreground">The Future of Tax Strategy is Here</h2>
+            <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">An end-to-end solution designed for accuracy, efficiency, and actionable insights.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard title="For Individuals" icon={<FileText className="h-6 w-6 text-primary" />}>
-              Upload your Form 1040 (US) or ITR-V (India). Our AI analyzes your salary, capital gains, and deductions to maximize your personal tax savings.
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <FeatureCard title="Client Data Collection" icon={<ClipboardList className="h-6 w-6 text-primary" />}>
+              Gather all necessary client information seamlessly with our built-in, intelligent questionnaires.
             </FeatureCard>
-            <FeatureCard title="For Businesses" icon={<BarChart className="h-6 w-6 text-primary" />}>
-              Submit your P&L and Balance Sheet. Get strategies on depreciation (like Section 179 in the US), business expenses, and entity structure optimization.
+            <FeatureCard title="Instant Strategy Calculation" icon={<Calculator className="h-6 w-6 text-primary" />}>
+              Our AI instantly evaluates your data against over 60 tax-saving strategies to find every opportunity.
             </FeatureCard>
-            <FeatureCard title="For Corporations" icon={<Globe className="h-6 w-6 text-primary" />}>
-              Our AI provides insights on advanced topics like transfer pricing, MAT (India), R&D credits (US), and international tax treaties.
+             <FeatureCard title="Multi-Entity & Multi-Year" icon={<FileText className="h-6 w-6 text-primary" />}>
+              Create comprehensive plans for multiple entities and across multiple years in just a few clicks.
+            </FeatureCard>
+            <FeatureCard title="Custom PDF Proposals" icon={<FileDown className="h-6 w-6 text-primary" />}>
+              Generate professional, client-ready tax plans and proposals in a polished PDF format with one click.
+            </FeatureCard>
+            <FeatureCard title="In-depth Strategy Details" icon={<Check className="h-6 w-6 text-primary" />}>
+              Learn how each calculation works with detailed pros and cons, tax code references, and requirements.
+            </FeatureCard>
+             <FeatureCard title="Access to Tax Experts" icon={<Users className="h-6 w-6 text-primary" />}>
+              Stuck on a complex issue? Get support from our dedicated team of in-house tax experts.
             </FeatureCard>
           </div>
         </div>
       </section>
+      
+      {/* Our Experts Section */}
+       <section className="py-20 md:py-24 bg-card">
+        <div className="container mx-auto px-6 text-center">
+            <h2 className="text-4xl font-bold text-foreground">Backed by a Team of Professionals</h2>
+            <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">
+                Our AI is powerful, but our human experts ensure you're never alone when tackling complex financial scenarios.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mt-16">
+                <div className="flex flex-col items-center">
+                    <Image
+                        src="https://placehold.co/200x200.png"
+                        alt="Team member photo"
+                        width={150}
+                        height={150}
+                        className="rounded-full shadow-lg"
+                        data-ai-hint="portrait professional"
+                    />
+                    <h3 className="text-xl font-semibold mt-4">Jessica Miller</h3>
+                    <p className="text-muted-foreground">Lead Tax Attorney, CPA</p>
+                </div>
+                 <div className="flex flex-col items-center">
+                    <Image
+                        src="https://placehold.co/200x200.png"
+                        alt="Team member photo"
+                        width={150}
+                        height={150}
+                        className="rounded-full shadow-lg"
+                        data-ai-hint="portrait professional"
+                    />
+                    <h3 className="text-xl font-semibold mt-4">David Chen</h3>
+                    <p className="text-muted-foreground">Senior Financial Analyst</p>
+                </div>
+                <div className="flex flex-col items-center">
+                    <Image
+                        src="https://placehold.co/200x200.png"
+                        alt="Team member photo"
+                        width={150}
+                        height={150}
+                        className="rounded-full shadow-lg"
+                        data-ai-hint="portrait professional"
+                    />
+                    <h3 className="text-xl font-semibold mt-4">Sarah Patel</h3>
+                    <p className="text-muted-foreground">Client Success Manager</p>
+                </div>
+                <div className="flex flex-col items-center">
+                    <Image
+                        src="https://placehold.co/200x200.png"
+                        alt="Team member photo"
+                        width={150}
+                        height={150}
+                        className="rounded-full shadow-lg"
+                        data-ai-hint="portrait professional"
+                    />
+                    <h3 className="text-xl font-semibold mt-4">Michael Rodriguez</h3>
+                    <p className="text-muted-foreground">Corporate Tax Specialist</p>
+                </div>
+            </div>
+        </div>
+    </section>
     </>
   );
 }

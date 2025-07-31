@@ -21,6 +21,7 @@ const AnalyzeTaxDocumentInputSchema = z.object({
     ),
   country: z.string().describe('The country of residence for tax purposes.'),
   analysisType: z.string().describe('The type of analysis requested (Individual/Personal, Small Business/LLC, Corporation).'),
+  taxYear: z.string().optional().describe('The primary tax year for the analysis. The AI should also consider multi-year plans if documents from other years are provided.'),
   additionalNotes: z.string().optional().describe('Optional user-provided notes, questions, or goals to guide the analysis, including "what-if" scenarios.'),
   // New Structured Inputs
   incomeAndInvestments: z.object({
@@ -57,9 +58,9 @@ const AnalyzeTaxDocumentOutputSchema = z.object({
   strategies: z.array(
     z.object({
       title: z.string().describe('The title of the tax-saving strategy.'),
-      description: z.string().describe('A detailed explanation of the strategy.'),
+      description: z.string().describe('A detailed explanation of the strategy, its pros, and its cons.'),
       action: z.string().describe('A clear, actionable step for the client.'),
-      relevantSection: z.string().describe('Applicable tax law section.'),
+      relevantSection: z.string().describe('Applicable tax law section, rule, or form name.'),
       potentialSavings: z.string().describe('Estimated potential savings from the strategy.'),
     })
   ).describe('A list of recommended tax-saving strategies.'),
@@ -79,27 +80,27 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   async ( input ) => {
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-pro'),
-      prompt: `You are a world-class tax consultant and financial analyst providing services for clients in ${input.country}.
-Your task is to conduct a comprehensive analysis of the provided financial documents AND the structured financial data for a client who has requested a "${input.analysisType}" analysis.
-Your response must be professional, insightful, and provide a clear, actionable tax-saving plan and a holistic financial health assessment.
+      prompt: `You are a world-class tax planning software. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
+Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" client for the tax year ${input.taxYear}. You must also consider multi-year and multi-entity planning if the user provides relevant documents or notes.
 
-**Prioritize analysis of the structured data provided by the user, and use the uploaded documents as supplementary information or for cross-verification.**
+Your response must be a professional, client-ready proposal that is highly educational and actionable.
 
 **Core Analysis Instructions:**
-1.  **Identify Document Types:** If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "Balance Sheet", "ITR-V (India)").
-2.  **Extract Key Financial Figures:** Consolidate and extract the most relevant financial figures from both the structured data and any provided documents. Be comprehensive. Examples include: Total Income, Gross Profit, Net Income, Total Deductions, Taxable Income, Key Asset/Liability values, etc.
-3.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. It should synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
-4.  **Develop In-Depth Tax Strategies:** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies that are highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
+1.  **Identify Document Types:** If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "Balance Sheet", "ITR-V (India)"). Note if documents from multiple years are present, as this indicates a multi-year analysis.
+2.  **Extract Key Financial Figures:** Consolidate and extract the most relevant financial figures from both the structured data and any provided documents. Be comprehensive. Examples: Total Income, Gross Profit, Net Income, Total Deductions, Taxable Income, Key Asset/Liability values, etc.
+3.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. Synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
+4.  **Develop In-Depth Tax Strategies (Calculate over 60+ strategies if applicable):** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
     *   A clear "title".
-    *   A detailed "description" explaining the strategy and its benefits.
+    *   A detailed "description" that is educational, explaining the strategy, its benefits, pros, and cons.
     *   A concrete, actionable next "step" for the client.
-    *   The "relevantSection" of the tax code or law that applies.
+    *   The "relevantSection" of the tax code, law, or form that applies (e.g., "IRC Section 179", "Section 80C of the Income Tax Act, 1961").
     *   A realistic "potentialSavings" estimate as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
 5.  **Address User's Specific Notes (What-If Analysis):**
-${input.additionalNotes ? `The client has provided the following notes, questions, or goals. You MUST address these in a dedicated "whatIfAnalysis" section. This is critical. Directly answer their questions or model the scenarios they've described (e.g., 'What if I contributed an extra $5,000 to my retirement account?'). Your analysis here should be distinct from the main strategy recommendations but can reference them. Client notes: "${input.additionalNotes}"` : "The client has not provided any specific notes. The whatIfAnalysis field can be omitted."}
-6. **Generate an Executive Summary:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
+${input.additionalNotes ? `The client has provided the following notes, questions, or goals. You MUST address these in a dedicated "whatIfAnalysis" section. This is critical. Directly answer their questions or model the scenarios they've described (e.g., 'What if I contributed an extra $5,000 to my retirement account?'). Your analysis here should be distinct from the main strategy recommendations. Client notes: "${input.additionalNotes}"` : "The client has not provided any specific notes. The whatIfAnalysis field can be omitted."}
+6.  **Generate an Executive Summary:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
 
-**Structured User-Provided Data for Analysis:**
+**Client Questionnaire Data (Prioritize this structured data):**
+- **Tax Year:** ${input.taxYear || 'Not Provided'}
 - **Income & Investments:**
   - Employment Income: ${input.incomeAndInvestments?.employmentIncome || 'Not Provided'}
   - Investment Income (dividends, capital gains): ${input.incomeAndInvestments?.investmentIncome || 'Not Provided'}
@@ -115,7 +116,7 @@ ${input.additionalNotes ? `The client has provided the following notes, question
   - Rental Income: ${input.businessAndRental?.rentalIncome || 'Not Provided'}
   - Rental Expenses: ${input.businessAndRental?.rentalExpenses || 'Not Provided'}
 
-**Analyze Uploaded Documents (if any):**
+**Analyze Uploaded Documents (Use as supplementary info):**
 {{#if fileDataUris}}
 The following documents are also provided for your analysis:
   {{#each fileDataUris}}

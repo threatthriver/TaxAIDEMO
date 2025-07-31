@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake } from 'lucide-react';
+import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -28,6 +28,7 @@ export default function TaxPlannerPage() {
     const [files, setFiles] = useState<File[]>([]);
     const [country, setCountry] = useState('United States');
     const [analysisType, setAnalysisType] = useState('Individual / Personal');
+    const [taxYear, setTaxYear] = useState(new Date().getFullYear().toString());
     const [additionalNotes, setAdditionalNotes] = useState('');
     
     // State for new structured data fields
@@ -87,6 +88,7 @@ export default function TaxPlannerPage() {
                 fileDataUris,
                 country,
                 analysisType,
+                taxYear,
                 additionalNotes,
                 incomeAndInvestments: {
                     employmentIncome,
@@ -133,14 +135,14 @@ export default function TaxPlannerPage() {
             <div className="container mx-auto px-4 sm:px-6">
                 <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary bg-card">
                     <CardHeader className="text-center p-8">
-                        <CardTitle className="text-3xl font-bold">Comprehensive Tax Analysis Suite</CardTitle>
-                        <CardDescription className="text-lg text-muted-foreground pt-2">Provide detailed info for a more accurate AI-powered plan.</CardDescription>
+                        <CardTitle className="text-3xl font-bold">Client Data Questionnaire</CardTitle>
+                        <CardDescription className="text-lg text-muted-foreground pt-2">Provide structured data and/or upload documents for a comprehensive tax plan.</CardDescription>
                     </CardHeader>
                     <CardContent className="p-8">
                         <form onSubmit={handleSubmit} className="space-y-8">
-                            <div className="grid md:grid-cols-2 gap-6">
+                            <div className="grid md:grid-cols-3 gap-6">
                                <div className="space-y-2">
-                                    <Label className="text-base font-semibold">1. Select Country</Label>
+                                    <Label className="text-base font-semibold">1. Country</Label>
                                     <Select value={country} onValueChange={setCountry}>
                                         <SelectTrigger className="w-full h-12 text-base">
                                             <SelectValue placeholder="Select a country" />
@@ -154,7 +156,7 @@ export default function TaxPlannerPage() {
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
-                                     <Label className="text-base font-semibold">2. Select Analysis Type</Label>
+                                     <Label className="text-base font-semibold">2. Analysis Type</Label>
                                     <Select value={analysisType} onValueChange={setAnalysisType}>
                                          <SelectTrigger className="w-full h-12 text-base">
                                             <SelectValue placeholder="Select analysis type" />
@@ -166,10 +168,14 @@ export default function TaxPlannerPage() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+                                 <div className="space-y-2">
+                                     <Label htmlFor="taxYear" className="text-base font-semibold flex items-center gap-2"><CalendarDays className="h-4 w-4"/>3. Tax Year</Label>
+                                     <Input id="taxYear" className="h-12 text-base" placeholder="e.g., 2023" value={taxYear} onChange={e => setTaxYear(e.target.value)} />
+                                 </div>
                             </div>
                             
                             <div className="space-y-2">
-                                 <Label className="text-base font-semibold">3. Enter Financial Details (Optional)</Label>
+                                 <Label className="text-base font-semibold">4. Financial Details (Optional)</Label>
                                  <p className="text-sm text-muted-foreground">The more details you provide, the better the analysis. You can still upload documents below.</p>
                                  <Accordion type="multiple" className="w-full">
                                     <AccordionItem value="item-1">
@@ -235,8 +241,8 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="space-y-4">
-                                 <Label className="text-base font-semibold">4. Upload Documents (Optional)</Label>
-                                 <p className="text-sm text-muted-foreground">You can also upload documents to supplement the data entered above. Our AI will cross-reference them.</p>
+                                 <Label className="text-base font-semibold">5. Upload Documents (Optional)</Label>
+                                 <p className="text-sm text-muted-foreground">Supplement the data above by uploading documents. Our AI supports multi-year analysis if you upload files from different years.</p>
                                 <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg hover:bg-muted/50 transition-colors">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <UploadCloud className="h-10 w-10 mb-3 text-muted-foreground" />
@@ -266,7 +272,7 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="additional-notes" className="text-base font-semibold">5. Additional Notes & "What-If" Scenarios (Optional)</Label>
+                              <Label htmlFor="additional-notes" className="text-base font-semibold">6. Additional Notes & "What-If" Scenarios (Optional)</Label>
                               <Textarea
                                   id="additional-notes"
                                   placeholder="e.g., What if I contributed an extra $5,000 to my retirement account? or I'm starting a side business, what should I consider?"
@@ -278,7 +284,7 @@ export default function TaxPlannerPage() {
 
                             <div className="pt-4 text-center">
                                 <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading}>
-                                    <Handshake className="mr-2"/> Generate My Financial Plan
+                                    <Handshake className="mr-2"/> Create My Tax Plan
                                 </Button>
                             </div>
                         </form>
