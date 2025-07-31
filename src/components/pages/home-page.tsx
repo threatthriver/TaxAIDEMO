@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -46,7 +47,7 @@ export default function HomePage({ setPage }: HomePageProps) {
           </div>
           <div className="relative hidden md:block">
              <Image 
-                src="https://placehold.co/600x400.png"
+                src="https://images.unsplash.com/photo-1563198804-b144dfc1661c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxUYXh8ZW58MHx8fHwxNzUzOTYyOTE5fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Tax documents and charts illustration" 
                 width={600} 
                 height={400} 
