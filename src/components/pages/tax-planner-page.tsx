@@ -11,10 +11,12 @@ import { useToast } from '@/hooks/use-toast';
 import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import dynamic from 'next/dynamic';
 
 import { analyzeTaxDocument, type AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
-import LoadingState from '@/components/loading-state';
-import AnalysisResultDisplay from '@/components/analysis-result';
+
+const LoadingState = dynamic(() => import('@/components/loading-state'));
+const AnalysisResultDisplay = dynamic(() => import('@/components/analysis-result'));
 
 // Helper to convert file to data URI
 const fileToDataUri = (file: File): Promise<string> => new Promise((resolve, reject) => {
