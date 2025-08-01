@@ -53,8 +53,8 @@ export default function Header() {
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost">Log In</Button>
-          <Button>Sign Up Free</Button>
+          <Button variant="ghost" className="rounded-full">Log In</Button>
+          <Button className="rounded-full">Sign Up Free</Button>
         </div>
         <div className="md:hidden">
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -71,8 +71,8 @@ export default function Header() {
                 </div>
                 <div className="flex flex-col space-y-6 text-lg">{navLinks}</div>
                 <div className="mt-8 flex flex-col space-y-4">
-                  <Button variant="ghost">Log In</Button>
-                  <Button>Sign Up Free</Button>
+                  <Button variant="ghost" className="rounded-full">Log In</Button>
+                  <Button className="rounded-full">Sign Up Free</Button>
                 </div>
               </div>
             </SheetContent>
