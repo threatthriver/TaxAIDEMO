@@ -6,7 +6,7 @@ import React, { useState, useRef } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -188,9 +188,11 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                )}
 
               <div>
-                <CardTitle className="text-2xl font-bold text-foreground mb-2">Your Action Plan</CardTitle>
-                <CardDescription className="mb-4">Check off these items as you complete them.</CardDescription>
-                
+                <CardHeader className="px-0">
+                    <CardTitle className="text-2xl font-bold text-foreground">Your Action Plan</CardTitle>
+                    <CardDescription>Check off these items as you complete them.</CardDescription>
+                </CardHeader>
+
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
                       <Progress value={progressPercentage} className="w-full h-3" />
@@ -198,7 +200,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                   </div>
                   <div className="space-y-3">
                       {result.strategies?.map((strategy) => (
-                          <Card key={strategy.title} className={`p-4 border rounded-lg transition-all ${checkedStrategies[strategy.title] ? 'bg-green-50 border-green-200' : 'bg-card'}`}>
+                          <Card key={strategy.title} data-state={checkedStrategies[strategy.title] ? 'checked' : 'unchecked'} className="data-[state=checked]:bg-green-50 data-[state=checked]:border-green-200 p-4 border rounded-lg transition-all">
                               <div className="flex items-start gap-4">
                                   <Checkbox 
                                       id={strategy.title} 
@@ -206,20 +208,23 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                                       onCheckedChange={() => handleCheckboxChange(strategy.title)}
                                       className="mt-1 h-5 w-5"
                                   />
-                                  <div className="flex-1">
+                                  <div className="flex-1 space-y-1">
                                       <label 
                                           htmlFor={strategy.title} 
-                                          className={`font-semibold text-lg text-primary cursor-pointer ${checkedStrategies[strategy.title] ? 'line-through text-muted-foreground' : ''}`}
+                                          className="font-semibold text-lg text-primary cursor-pointer data-[state=checked]:line-through data-[state=checked]:text-muted-foreground"
+                                          data-state={checkedStrategies[strategy.title] ? 'checked' : 'unchecked'}
                                       >
                                           {strategy.title}
                                       </label>
-                                      <p className={`text-green-600 font-bold ${checkedStrategies[strategy.title] ? 'line-through' : ''}`}>{strategy.potentialSavings}</p>
-                                      <p className={`mt-2 text-muted-foreground leading-relaxed ${checkedStrategies[strategy.title] ? 'opacity-70' : ''}`}>{strategy.description}</p>
-                                      <div className={`mt-3 bg-primary/10 p-3 rounded-lg border border-primary/20 ${checkedStrategies[strategy.title] ? 'opacity-60' : ''}`}>
-                                          <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
-                                          <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
-                                      </div>
-                                      <p className="text-xs text-gray-500 mt-3 font-code">Relevant Section: {strategy.relevantSection}</p>
+                                       <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{maxHeight: checkedStrategies[strategy.title] ? '0px' : '500px', opacity: checkedStrategies[strategy.title] ? 0 : 1}}>
+                                          <p className="text-green-600 font-bold">{strategy.potentialSavings}</p>
+                                          <p className="mt-2 text-muted-foreground leading-relaxed">{strategy.description}</p>
+                                          <div className="mt-3 bg-primary/10 p-3 rounded-lg border border-primary/20">
+                                              <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
+                                              <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
+                                          </div>
+                                          <p className="text-xs text-gray-500 mt-3 font-code">Relevant Section: {strategy.relevantSection}</p>
+                                       </div>
                                   </div>
                               </div>
                           </Card>
