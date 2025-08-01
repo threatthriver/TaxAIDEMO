@@ -26,30 +26,35 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-card pt-16 md:pt-24">
-        <div className="container mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-left animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">
-              Automated Tax Planning. <span className="text-primary">Unmatched Savings.</span>
+      <section className="bg-background pt-24 md:pt-32">
+        <div className="container mx-auto px-6 py-12 text-center">
+          <div className="animate-fade-in">
+            <h1 className="text-5xl md:text-7xl font-extrabold text-foreground mb-4 leading-tight">
+              Automated Tax Planning. <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">Unmatched Savings.</span>
             </h1>
-            <h2 className="text-xl md:text-2xl font-medium text-muted-foreground mb-8 max-w-2xl">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
               Streamline your tax strategy. Upload documents or fill out our questionnaire to generate a comprehensive, professional tax plan in minutes.
-            </h2>
-            <p className="max-w-2xl text-lg text-muted-foreground mb-10">
-              For individuals, businesses, and corporations. Create multi-entity and multi-year plans with a single click, backed by instant calculations for over 60 tax-saving strategies.
             </p>
-            <Link href="/planner">
-              <Button size="lg" className="px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
-                Create My Tax Plan
-              </Button>
-            </Link>
+            <div className="flex justify-center gap-4">
+                <Link href="/planner">
+                <Button size="lg" className="px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                    Create My Tax Plan
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                </Link>
+                <Link href="/solutions">
+                <Button size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold">
+                    Learn More
+                </Button>
+                </Link>
+            </div>
           </div>
-          <div className="relative hidden md:block animate-fade-in-up">
-             <Image 
+          <div className="relative mt-20 animate-fade-in-up">
+             <Image
                 src="https://images.unsplash.com/photo-1563198804-b144dfc1661c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxUYXh8ZW58MHx8fHwxNzUzOTYyOTE5fDA&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Tax documents and charts illustration" 
-                width={600} 
-                height={400} 
+                alt="Tax documents and charts illustration"
+                width={1200}
+                height={600}
                 className="rounded-xl shadow-2xl"
                 data-ai-hint="finance abstract"
              />
@@ -58,7 +63,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 md:py-24 bg-background">
+      <section className="py-20 md:py-24 bg-secondary/50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl font-bold text-foreground">The Future of Tax Strategy is Here</h2>
@@ -88,14 +93,14 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-24 bg-card">
+      <section className="py-20 md:py-24 bg-background">
         <div className="container mx-auto px-6 text-center animate-fade-in">
             <h2 className="text-4xl font-bold text-foreground">Ready to Take Control of Your Taxes?</h2>
-            <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
             <Link href="/planner">
-              <Button size="lg" className="mt-8 px-10 py-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+              <Button size="lg" className="mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
                 Start My Free Analysis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

@@ -13,11 +13,7 @@ export default function Header() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // This timeout ensures the animation runs on first load.
-    const timeout = setTimeout(() => {
-      setIsMounted(true);
-    }, 300);
-    return () => clearTimeout(timeout);
+    setIsMounted(true);
   }, []);
 
 
@@ -27,9 +23,8 @@ export default function Header() {
       className="text-2xl font-bold cursor-pointer flex items-center gap-2"
       onClick={() => setIsMenuOpen(false)}
     >
-      <ShieldCheck className="h-8 w-8 text-primary"/>
-      <span className="text-foreground">Tax</span>
-      <span className="font-light text-muted-foreground">AI</span>
+      <ShieldCheck className="h-8 w-8 text-blue-500"/>
+      <span className="text-foreground">TaxAI</span>
     </Link>
   );
 

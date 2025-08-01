@@ -6,7 +6,7 @@ import { CheckCircle } from "lucide-react";
 
 export default function SolutionsPage() {
     return (
-        <div className="bg-background min-h-[calc(100vh-80px)] py-20">
+        <div className="bg-background min-h-screen py-20 md:py-32">
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="text-center mb-16 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
@@ -23,11 +23,11 @@ export default function SolutionsPage() {
                             <CardTitle className="text-2xl">For Individuals</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <p className="text-muted-foreground">Optimize your personal finances and maximize your tax returns with our intuitive tools.</p>
+                            <p className="text-muted-foreground text-lg">Optimize your personal finances and maximize your tax returns with our intuitive tools.</p>
                             <ul className="space-y-2">
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> W-2 & 1099 Analysis</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> Investment & Capital Gains</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> Deduction Finder</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> W-2 & 1099 Analysis</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Investment & Capital Gains</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Deduction Finder</li>
                             </ul>
                         </CardContent>
                     </Card>
@@ -36,11 +36,11 @@ export default function SolutionsPage() {
                             <CardTitle className="text-2xl">For Small Businesses / LLCs</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <p className="text-muted-foreground">Streamline your business taxes, from expense tracking to payroll and profit analysis.</p>
+                            <p className="text-muted-foreground text-lg">Streamline your business taxes, from expense tracking to payroll and profit analysis.</p>
                              <ul className="space-y-2">
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> P&L and Balance Sheet Analysis</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> Expense Categorization</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> Quarterly Tax Estimates</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> P&L and Balance Sheet Analysis</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Expense Categorization</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Quarterly Tax Estimates</li>
                             </ul>
                         </CardContent>
                     </Card>
@@ -49,11 +49,11 @@ export default function SolutionsPage() {
                             <CardTitle className="text-2xl">For Corporations</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                           <p className="text-muted-foreground">Comprehensive tax planning for complex corporate structures and multi-entity enterprises.</p>
+                           <p className="text-muted-foreground text-lg">Comprehensive tax planning for complex corporate structures and multi-entity enterprises.</p>
                              <ul className="space-y-2">
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> Multi-Year Strategic Planning</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> R&D Tax Credits</li>
-                                <li className="flex items-center gap-2"><CheckCircle className="h-5 w-5 text-primary"/> International Tax Analysis</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Multi-Year Strategic Planning</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> R&D Tax Credits</li>
+                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> International Tax Analysis</li>
                             </ul>
                         </CardContent>
                     </Card>

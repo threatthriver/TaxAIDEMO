@@ -50,7 +50,7 @@ const pricingTiers = [
 
 export default function PricingPage() {
     return (
-        <div className="bg-background min-h-[calc(100vh-80px)] py-20">
+        <div className="bg-background min-h-screen py-20 md:py-32">
             <div className="container mx-auto px-4 sm:px-6">
                  <div className="text-center mb-16 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-foreground mb-4">
@@ -75,7 +75,7 @@ export default function PricingPage() {
                                 </div>
                                 <ul className="space-y-3">
                                     {tier.features.map(feature => (
-                                        <li key={feature} className="flex items-center gap-2">
+                                        <li key={feature} className="flex items-center gap-3">
                                             <Check className="h-5 w-5 text-green-500" />
                                             <span>{feature}</span>
                                         </li>
