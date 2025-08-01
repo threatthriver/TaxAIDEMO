@@ -26,7 +26,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-card pt-10 md:pt-0">
+      <section className="bg-card pt-28 md:pt-40">
         <div className="container mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <div className="text-left animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-extrabold text-foreground mb-4 leading-tight">

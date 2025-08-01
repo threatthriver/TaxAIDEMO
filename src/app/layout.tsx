@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${sourceCodePro.variable} font-sans antialiased`}>
         <Header />
-        <main>{children}</main>
+        <main className="pt-20">{children}</main>
         <Footer />
         <Toaster />
       </body>
