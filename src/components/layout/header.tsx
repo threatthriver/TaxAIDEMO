@@ -17,7 +17,7 @@ export default function Header() {
       className="text-2xl font-bold cursor-pointer flex items-center gap-2"
       onClick={() => setIsMenuOpen(false)}
     >
-      <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(var(--primary))' }}/>
+      <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(173 58% 39%)' }}/>
       <span className="text-foreground">TaxAI</span>
     </Link>
   );
