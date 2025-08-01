@@ -8,19 +8,19 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const Logo = () => (
+const Logo = ({ onClick }: { onClick?: () => void }) => (
     <Link
       href="/"
       className="text-2xl font-bold cursor-pointer flex items-center gap-2"
-      onClick={() => setIsMenuOpen(false)}
+      onClick={onClick}
     >
       <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(173 58% 39%)' }}/>
       <span className="text-foreground">TaxAI</span>
     </Link>
   );
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = (
     <>
@@ -43,7 +43,7 @@ export default function Header() {
         "container mx-auto px-6 py-3 flex justify-between items-center rounded-full border transition-all duration-500",
         "bg-card/80 backdrop-blur-lg shadow-lg border-border/20",
        )}>
-        <Logo />
+        <Logo onClick={() => setIsMenuOpen(false)} />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
           <Button variant="ghost" className="rounded-full">Log In</Button>
@@ -60,7 +60,7 @@ export default function Header() {
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <div className="p-4">
                 <div className="mb-8">
-                  <Logo />
+                  <Logo onClick={() => setIsMenuOpen(false)} />
                 </div>
                 <div className="flex flex-col space-y-6 text-lg">{navLinks}</div>
                 <div className="mt-8 flex flex-col space-y-4">
