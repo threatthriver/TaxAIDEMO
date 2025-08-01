@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -10,12 +10,6 @@ import { cn } from '@/lib/utils';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
 
   const Logo = () => (
     <Link
@@ -48,7 +42,6 @@ export default function Header() {
        <nav className={cn(
         "container mx-auto px-6 py-3 flex justify-between items-center rounded-full border transition-all duration-500",
         "bg-card/80 backdrop-blur-lg shadow-lg border-border/20",
-        isMounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
        )}>
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
