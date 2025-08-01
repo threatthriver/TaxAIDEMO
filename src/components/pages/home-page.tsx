@@ -37,13 +37,13 @@ export default function HomePage() {
             </p>
             <div className="flex justify-center gap-4">
                 <Link href="/planner">
-                <Button size="lg" className="px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                <Button size="lg" className="px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full">
                     Create My Tax Plan
                     <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 </Link>
                 <Link href="/solutions">
-                <Button size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold">
+                <Button size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold rounded-full">
                     Learn More
                 </Button>
                 </Link>
@@ -100,7 +100,7 @@ export default function HomePage() {
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
             <Link href="/planner">
-              <Button size="lg" className="mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow">
+              <Button size="lg" className="mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full">
                 Start My Free Analysis
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
