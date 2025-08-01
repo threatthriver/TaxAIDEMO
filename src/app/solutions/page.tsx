@@ -2,7 +2,32 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, User, Briefcase, Building2 } from "lucide-react";
+
+const solutions = [
+    {
+        icon: <User className="h-8 w-8 text-primary"/>,
+        title: "For Individuals",
+        description: "Optimize your personal finances and maximize your tax returns with our intuitive tools.",
+        features: ["W-2 & 1099 Analysis", "Investment & Capital Gains", "Deduction Finder"],
+        borderColor: "border-t-blue-500"
+    },
+    {
+        icon: <Briefcase className="h-8 w-8 text-primary"/>,
+        title: "For Small Businesses / LLCs",
+        description: "Streamline your business taxes, from expense tracking to payroll and profit analysis.",
+        features: ["P&L and Balance Sheet Analysis", "Expense Categorization", "Quarterly Tax Estimates"],
+        borderColor: "border-t-green-500",
+        highlight: true
+    },
+    {
+        icon: <Building2 className="h-8 w-8 text-primary"/>,
+        title: "For Corporations",
+        description: "Comprehensive tax planning for complex corporate structures and multi-entity enterprises.",
+        features: ["Multi-Year Strategic Planning", "R&D Tax Credits", "International Tax Analysis"],
+        borderColor: "border-t-purple-500"
+    }
+]
 
 export default function SolutionsPage() {
     return (
@@ -18,45 +43,28 @@ export default function SolutionsPage() {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8">
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                        <CardHeader>
-                            <CardTitle className="text-2xl">For Individuals</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <p className="text-muted-foreground text-lg">Optimize your personal finances and maximize your tax returns with our intuitive tools.</p>
-                            <ul className="space-y-2">
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> W-2 & 1099 Analysis</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Investment & Capital Gains</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Deduction Finder</li>
-                            </ul>
-                        </CardContent>
-                    </Card>
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow border-2 border-primary animate-fade-in-up" style={{animationDelay: '0.4s'}}>
-                        <CardHeader>
-                            <CardTitle className="text-2xl">For Small Businesses / LLCs</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <p className="text-muted-foreground text-lg">Streamline your business taxes, from expense tracking to payroll and profit analysis.</p>
-                             <ul className="space-y-2">
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> P&L and Balance Sheet Analysis</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Expense Categorization</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Quarterly Tax Estimates</li>
-                            </ul>
-                        </CardContent>
-                    </Card>
-                    <Card className="shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up" style={{animationDelay: '0.6s'}}>
-                        <CardHeader>
-                            <CardTitle className="text-2xl">For Corporations</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                           <p className="text-muted-foreground text-lg">Comprehensive tax planning for complex corporate structures and multi-entity enterprises.</p>
-                             <ul className="space-y-2">
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> Multi-Year Strategic Planning</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> R&D Tax Credits</li>
-                                <li className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/> International Tax Analysis</li>
-                            </ul>
-                        </CardContent>
-                    </Card>
+                    {solutions.map((solution, index) => (
+                        <Card 
+                            key={solution.title} 
+                            className={`shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up border-t-4 ${solution.borderColor} ${solution.highlight ? 'border-2 border-primary' : ''}`} 
+                            style={{animationDelay: `${index * 0.2}s`}}
+                        >
+                            <CardHeader className="text-center">
+                                <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center mb-4">
+                                   {solution.icon}
+                                </div>
+                                <CardTitle className="text-2xl">{solution.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <p className="text-muted-foreground text-center text-lg">{solution.description}</p>
+                                <ul className="space-y-2 pt-4 border-t">
+                                    {solution.features.map(feature => (
+                                       <li key={feature} className="flex items-center gap-3"><CheckCircle className="h-5 w-5 text-primary"/>{feature}</li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </div>
         </div>
