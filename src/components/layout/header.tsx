@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -9,14 +10,29 @@ import { cn } from '@/lib/utils';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (window.scrollY > 10) {
+        setIsVisible(true);
+      } else {
+        // Use a timeout to delay hiding the navbar, feels smoother
+        setTimeout(() => {
+           if (window.scrollY <= 10) setIsVisible(false);
+        }, 300);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Make it visible on initial load after a short delay
+    const initialTimeout = setTimeout(() => setIsVisible(true), 500);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(initialTimeout);
+    };
   }, []);
 
   const Logo = () => (
@@ -47,11 +63,12 @@ export default function Header() {
   );
 
   return (
-    <header className={cn(
-      "sticky top-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-card/80 backdrop-blur-lg border-b" : "bg-transparent"
-    )}>
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header className="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-300">
+       <nav className={cn(
+        "container mx-auto px-6 py-3 flex justify-between items-center rounded-full border transition-all duration-500",
+        "bg-card/80 backdrop-blur-lg shadow-lg border-border/20",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
+       )}>
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
