@@ -351,5 +351,3 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     </>
   );
 }
-
-    
