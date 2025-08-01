@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-background border-t">
@@ -10,17 +12,17 @@ export default function Footer() {
           <div>
             <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Solutions</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">For Individuals</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">For Businesses</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">For Corporations</a></li>
+              <li><Link href="/solutions" className="text-sm text-muted-foreground hover:text-primary">For Individuals</Link></li>
+              <li><Link href="/solutions" className="text-sm text-muted-foreground hover:text-primary">For Businesses</Link></li>
+              <li><Link href="/solutions" className="text-sm text-muted-foreground hover:text-primary">For Corporations</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-md font-semibold text-gray-700 dark:text-gray-200">Resources</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">Blog</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">Pricing</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary">About Us</a></li>
+              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-primary">Pricing</Link></li>
+              <li><Link href="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
             </ul>
           </div>
           <div>
