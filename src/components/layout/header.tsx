@@ -10,30 +10,16 @@ import { cn } from '@/lib/utils';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsVisible(true);
-      } else {
-        // Use a timeout to delay hiding the navbar, feels smoother
-        setTimeout(() => {
-           if (window.scrollY <= 10) setIsVisible(false);
-        }, 300);
-      }
-    };
-    
-    // Make it visible on initial load after a short delay
-    const initialTimeout = setTimeout(() => setIsVisible(true), 500);
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(initialTimeout);
-    };
+    // This timeout ensures the animation runs on first load.
+    const timeout = setTimeout(() => {
+      setIsMounted(true);
+    }, 300);
+    return () => clearTimeout(timeout);
   }, []);
+
 
   const Logo = () => (
     <Link
@@ -67,7 +53,7 @@ export default function Header() {
        <nav className={cn(
         "container mx-auto px-6 py-3 flex justify-between items-center rounded-full border transition-all duration-500",
         "bg-card/80 backdrop-blur-lg shadow-lg border-border/20",
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
+        isMounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
        )}>
         <Logo />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
