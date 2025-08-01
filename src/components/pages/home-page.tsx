@@ -30,7 +30,7 @@ export default function HomePage() {
         <div className="container mx-auto px-6 py-12 text-center">
           <div className="animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-extrabold text-foreground mb-4 leading-tight">
-              Automated Tax Planning. <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">Unmatched Savings.</span>
+              Automated Tax Planning. <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-400">Unmatched Savings.</span>
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto">
               Streamline your tax strategy. Upload documents or fill out our questionnaire to generate a comprehensive, professional tax plan in minutes.

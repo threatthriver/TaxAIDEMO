@@ -23,7 +23,7 @@ export default function Header() {
       className="text-2xl font-bold cursor-pointer flex items-center gap-2"
       onClick={() => setIsMenuOpen(false)}
     >
-      <ShieldCheck className="h-8 w-8 text-blue-500"/>
+      <ShieldCheck className="h-8 w-8 text-primary"/>
       <span className="text-foreground">TaxAI</span>
     </Link>
   );
