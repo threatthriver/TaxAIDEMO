@@ -56,7 +56,8 @@ export default function TaxPlannerPage() {
         }
     };
 
-    const handleRemoveFile = (index: number) => {
+    const handleRemoveFile = (index: number, e: React.MouseEvent) => {
+        e.stopPropagation(); // prevent opening file dialog
         setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
     };
     
@@ -245,36 +246,38 @@ export default function TaxPlannerPage() {
                             <div className="space-y-4">
                                  <Label className="text-base font-semibold">5. Upload Documents (Optional)</Label>
                                  <p className="text-sm text-muted-foreground">Supplement the data above by uploading documents. Our AI supports multi-year analysis if you upload files from different years.</p>
-                                <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg hover:bg-muted/50 transition-colors">
-                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <UploadCloud className="h-10 w-10 mb-3 text-muted-foreground" />
-                                        <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-muted-foreground">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
-                                    </div>
+                                <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full min-h-40 p-4 border-2 border-dashed rounded-lg hover:bg-muted/50 transition-colors">
+                                    {files.length === 0 ? (
+                                        <div className="flex flex-col items-center justify-center text-center">
+                                            <UploadCloud className="h-10 w-10 mb-3 text-muted-foreground" />
+                                            <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold text-primary">Click to upload</span> or drag and drop</p>
+                                            <p className="text-xs text-muted-foreground">PDF, PNG, JPG, JPEG (multiple files allowed)</p>
+                                        </div>
+                                    ) : (
+                                        <div className="w-full text-left">
+                                            <h4 className="font-semibold text-muted-foreground mb-2">Selected Files:</h4>
+                                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                {files.map((file, index) => (
+                                                    <li key={index} className="flex items-center justify-between bg-secondary p-2 rounded-md border">
+                                                        <div className="flex items-center gap-2 overflow-hidden">
+                                                            <FileIcon className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                                                            <span className="truncate text-sm">{file.name}</span>
+                                                        </div>
+                                                        <Button variant="ghost" size="icon" className="h-6 w-6 flex-shrink-0" onClick={(e) => handleRemoveFile(index, e)}>
+                                                            <XCircle className="h-4 w-4 text-red-500" />
+                                                        </Button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                            <p className="text-xs text-muted-foreground mt-3 text-center">Click here or drag and drop to add more files.</p>
+                                        </div>
+                                    )}
                                     <Input id="file-upload" type="file" className="sr-only" onChange={handleFileChange} accept=".pdf,.png,.jpg,.jpeg" multiple />
                                 </Label>
-                                 {files.length > 0 && (
-                                    <div className="space-y-2 pt-2">
-                                        <h4 className="font-semibold text-muted-foreground">Selected Files:</h4>
-                                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                            {files.map((file, index) => (
-                                                <li key={index} className="flex items-center justify-between bg-secondary p-2 rounded-md border">
-                                                    <div className="flex items-center gap-2 overflow-hidden">
-                                                        <FileIcon className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                                                        <span className="truncate text-sm">{file.name}</span>
-                                                    </div>
-                                                    <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => handleRemoveFile(index)}>
-                                                        <XCircle className="h-4 w-4 text-red-500" />
-                                                    </Button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="additional-notes" className="text-base font-semibold">6. Additional Notes & "What-If" Scenarios (Optional)</Label>
+                              <Label htmlFor="additional-notes" className="text-base font-semibold">6. Additional Notes &amp; "What-If" Scenarios (Optional)</Label>
                               <Textarea
                                   id="additional-notes"
                                   placeholder="e.g., What if I contributed an extra $5,000 to my retirement account? or I'm starting a side business, what should I consider?"
@@ -295,4 +298,5 @@ export default function TaxPlannerPage() {
             </div>
         </div>
     );
-}
+
+    
