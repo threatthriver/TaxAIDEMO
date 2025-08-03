@@ -7,15 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 const Logo = ({ onClick }: { onClick?: () => void }) => (
     <Link
       href="/"
-      className="text-2xl font-bold cursor-pointer flex items-center gap-2"
+      className="cursor-pointer flex items-center gap-2"
       onClick={onClick}
     >
-      <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(173 58% 39%)' }}/>
-      <span className="text-foreground">TaxAI</span>
+      <div className="flex items-center gap-2">
+        <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(173 58% 39%)' }}/>
+        <span className="text-2xl font-bold text-foreground">TaxAI</span>
+      </div>
+      <Badge variant="outline" className="text-xs font-semibold border-primary/50 text-primary/80">
+          Preview
+      </Badge>
     </Link>
   );
 
