@@ -44,14 +44,14 @@ export default function AboutPage() {
     setIsMounted(true);
   }, []);
 
-  const currentSectionIndex = useTransform(scrollYProgress, (latest) => {
+  const currentSectionIndex = useTransform(scrollYProgress, (latest: number) => {
     return Math.min(sections.length - 1, Math.floor(latest * 4));
   });
 
   const [currentSection, setCurrentSection] = useState(0);
 
   useEffect(() => {
-    return currentSectionIndex.on('change', (latest) => {
+    return currentSectionIndex.on('change', (latest: number) => {
         setCurrentSection(latest);
     });
   }, [currentSectionIndex]);
