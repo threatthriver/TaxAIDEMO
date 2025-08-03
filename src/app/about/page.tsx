@@ -15,7 +15,7 @@ const teamMembers = [
         name: 'Leo Rodriguez',
         role: 'HEAD OF ENGINEERING',
         imageUrl: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NTM5NjUwMDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
-        bgColor: 'bg-sky-200',
+        bgColor: 'bg-accent',
         description: 'Leo leads the development of our robust platform, turning complex algorithms into a seamless user experience.',
         linkText: 'Building Secure FinTech →'
     }
@@ -39,7 +39,7 @@ export default function AboutPage() {
                            {teamMembers.map((member, index) => (
                                <div key={member.name} className={`relative ${index % 2 !== 0 ? 'sm:mt-24' : ''}`}>
                                    <div className="relative group">
-                                       <div className={`absolute -inset-4 ${member.bgColor} rounded-full transform transition-transform duration-500 group-hover:scale-105`} style={{clipPath: 'ellipse(60% 50% at 50% 50%)'}} />
+                                       <div className={`absolute -inset-4 ${member.bgColor} rounded-full transform transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3`} style={{clipPath: 'ellipse(60% 50% at 50% 50%)'}} />
                                        <Image
                                            src={member.imageUrl}
                                            alt={member.name}
