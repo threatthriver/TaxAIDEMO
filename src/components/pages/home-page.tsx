@@ -9,8 +9,8 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 
-const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: string; children: React.ReactNode }) => (
-  <Card className="bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary animate-fade-in-up">
+const FeatureCard = ({ icon, title, children, className }: { icon: React.ReactNode, title: string; children: React.ReactNode, className?: string }) => (
+  <Card className={cn("bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary", className)}>
     <CardHeader className="flex flex-row items-center gap-4">
       <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
         {icon}
@@ -39,7 +39,7 @@ export default function HomePage() {
         </div>
 
         <div className="container mx-auto px-6 py-12 text-center relative z-10">
-          <div className="animate-fade-in">
+          <div className="animate-slide-in-from-left">
             <h1 className="text-5xl md:text-7xl font-extrabold text-foreground mb-4 leading-tight">
               Automated Tax Planning. <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-400">Unmatched Savings.</span>
             </h1>
@@ -47,7 +47,7 @@ export default function HomePage() {
               Streamline your tax strategy. Upload documents or fill out our questionnaire to generate a comprehensive, professional tax plan in minutes.
             </p>
             <div className="flex justify-center gap-4">
-                <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full")}>
+                <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full animate-shimmer")}>
                     Create My Tax Plan
                     <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -56,7 +56,7 @@ export default function HomePage() {
                 </Link>
             </div>
           </div>
-          <div className="relative mt-20 animate-fade-in-up">
+          <div className="relative mt-20 animate-slide-in-from-right">
              <Image
                 src="https://images.unsplash.com/photo-1563198804-b144dfc1661c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxUYXh8ZW58MHx8fHwxNzUzOTYyOTE5fDA&ixlib=rb-4.1.0&q=80&w=1080"
                 alt="Tax documents and charts illustration"
@@ -77,22 +77,22 @@ export default function HomePage() {
             <p className="text-xl text-muted-foreground mt-2 max-w-3xl mx-auto">An end-to-end solution designed for accuracy, efficiency, and actionable insights.</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard title="Client Data Collection" icon={<ClipboardList className="h-6 w-6 text-primary" />}>
+            <FeatureCard title="Client Data Collection" icon={<ClipboardList className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0s'}}>
               Gather all necessary client information seamlessly with our built-in, intelligent questionnaires.
             </FeatureCard>
-            <FeatureCard title="Instant Strategy Calculation" icon={<Calculator className="h-6 w-6 text-primary" />}>
+            <FeatureCard title="Instant Strategy Calculation" icon={<Calculator className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0.1s'}}>
               Our AI instantly evaluates your data against over 60 tax-saving strategies to find every opportunity.
             </FeatureCard>
-             <FeatureCard title="Multi-Entity & Multi-Year" icon={<FileText className="h-6 w-6 text-primary" />}>
+             <FeatureCard title="Multi-Entity & Multi-Year" icon={<FileText className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0.2s'}}>
               Create comprehensive plans for multiple entities and across multiple years in just a few clicks.
             </FeatureCard>
-            <FeatureCard title="Custom PDF Proposals" icon={<FileDown className="h-6 w-6 text-primary" />}>
+            <FeatureCard title="Custom PDF Proposals" icon={<FileDown className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0.3s'}}>
               Generate professional, client-ready tax plans and proposals in a polished PDF format with one click.
             </FeatureCard>
-            <FeatureCard title="In-depth Strategy Details" icon={<Check className="h-6 w-6 text-primary" />}>
+            <FeatureCard title="In-depth Strategy Details" icon={<Check className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0.4s'}}>
               Learn how each calculation works with detailed pros and cons, tax code references, and requirements.
             </FeatureCard>
-             <FeatureCard title="Access to Tax Experts" icon={<Users className="h-6 w-6 text-primary" />}>
+             <FeatureCard title="Access to Tax Experts" icon={<Users className="h-6 w-6 text-primary" />} className="animate-scale-in" style={{animationDelay: '0.5s'}}>
               Stuck on a complex issue? Get support from our dedicated team of in-house tax experts.
             </FeatureCard>
           </div>
@@ -106,7 +106,7 @@ export default function HomePage() {
             <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
-            <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full")}>
+            <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full animate-shimmer")}>
                 Start My Free Analysis
                 <ArrowRight className="ml-2 h-5 w-5" />
             </Link>

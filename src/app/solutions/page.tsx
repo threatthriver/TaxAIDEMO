@@ -46,8 +46,8 @@ export default function SolutionsPage() {
                     {solutions.map((solution, index) => (
                         <Card 
                             key={solution.title} 
-                            className={`shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up border-t-4 ${solution.borderColor} ${solution.highlight ? 'border-2 border-primary' : ''}`} 
-                            style={{animationDelay: `${index * 0.2}s`}}
+                            className={`shadow-lg hover:shadow-xl transition-shadow animate-scale-in border-t-4 ${solution.borderColor} ${solution.highlight ? 'border-2 border-primary' : ''}`} 
+                            style={{animationDelay: `${index * 0.2}s`, animationFillMode: 'both'}}
                         >
                             <CardHeader className="text-center">
                                 <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center mb-4">
