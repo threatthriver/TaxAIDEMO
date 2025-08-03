@@ -137,6 +137,7 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                 size="lg"
                 onClick={() => setIsOpen(prev => !prev)}
                 className="rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
+                aria-label="Open chat assistant"
             >
                 <MessageSquare className="h-8 w-8" />
             </Button>

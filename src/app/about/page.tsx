@@ -37,7 +37,6 @@ const values = [
 
 export default function AboutPage() {
   const { scrollYProgress } = useScroll();
-  const [currentSection, setCurrentSection] = useState(0);
   const [hoveredValue, setHoveredValue] = useState<number | null>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -45,15 +44,17 @@ export default function AboutPage() {
     setIsMounted(true);
   }, []);
 
+  const currentSectionIndex = useTransform(scrollYProgress, (latest) => {
+    return Math.min(sections.length - 1, Math.floor(latest * 4));
+  });
+
+  const [currentSection, setCurrentSection] = useState(0);
+
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on('change', (latest) => {
-      const newSection = Math.min(sections.length - 1, Math.floor(latest * 4));
-      if (newSection !== currentSection) {
-        setCurrentSection(newSection);
-      }
+    return currentSectionIndex.on('change', (latest) => {
+        setCurrentSection(latest);
     });
-    return () => unsubscribe();
-  }, [scrollYProgress, currentSection]);
+  }, [currentSectionIndex]);
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
 
@@ -103,8 +104,7 @@ export default function AboutPage() {
               src={safeCurrentSection.image}
               alt={safeCurrentSection.title}
               fill
-              objectFit="cover"
-              className="opacity-20"
+              className="opacity-20 object-cover"
               data-ai-hint="people meeting"
             />
           </motion.div>
