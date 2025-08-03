@@ -5,9 +5,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, ShieldCheck } from 'lucide-react';
+import { Menu, ShieldCheck, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
 
 const Logo = ({ onClick }: { onClick?: () => void }) => (
     <Link
@@ -16,12 +15,9 @@ const Logo = ({ onClick }: { onClick?: () => void }) => (
       onClick={onClick}
     >
       <div className="flex items-center gap-2">
-        <ShieldCheck className="h-8 w-8" style={{ color: 'hsl(173 58% 39%)' }}/>
+        <ShieldCheck className="h-8 w-8 text-primary" />
         <span className="text-2xl font-bold text-foreground">TaxAI</span>
       </div>
-      <Badge variant="outline" className="text-xs font-semibold border-primary/50 text-primary/80">
-          Preview
-      </Badge>
     </Link>
   );
 
@@ -56,15 +52,16 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-300">
        <nav className={cn(
-        "container mx-auto px-6 flex justify-between items-center rounded-full border transition-all duration-300",
-        isScrolled ? "py-2 shadow-2xl" : "py-3 shadow-lg",
-        "bg-card/80 backdrop-blur-lg border-border/20",
+        "container mx-auto px-6 flex justify-between items-center border transition-all duration-300",
+        isScrolled ? "py-2 shadow-lg" : "py-3 shadow-sm",
+        "bg-background/80 backdrop-blur-lg border-border/40 rounded-full",
        )}>
         <Logo onClick={() => setIsMenuOpen(false)} />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" className="rounded-full">Log In</Button>
-          <Button className="rounded-full animate-shimmer">Sign Up Free</Button>
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <Settings className="h-5 w-5" />
+          </Button>
         </div>
         <div className="md:hidden">
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
