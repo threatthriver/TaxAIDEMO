@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays, Bot } from 'lucide-react';
+import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays, Bot, Globe, FileType } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import dynamic from 'next/dynamic';
@@ -33,7 +33,11 @@ const useStickyState = (defaultValue: any, key: string) => {
     useEffect(() => {
         const stickyValue = window.localStorage.getItem(key);
         if (stickyValue !== null) {
-            setValue(JSON.parse(stickyValue));
+            try {
+                setValue(JSON.parse(stickyValue));
+            } catch {
+                setValue(stickyValue);
+            }
         }
     }, [key]);
 
@@ -85,6 +89,13 @@ export default function TaxPlannerPage() {
         setFiles([]);
         setAnalysisResult(null);
         setLoading(false);
+        // Clear local storage by removing items that start with 'taxplanner-'
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('taxplanner-')) {
+                localStorage.removeItem(key);
+            }
+        });
+        // Reset state variables to their defaults, which will re-initialize sticky state
         setCountry('United States');
         setAnalysisType('Individual / Personal');
         setTaxYear(new Date().getFullYear().toString());
@@ -101,12 +112,6 @@ export default function TaxPlannerPage() {
         setBusinessExpenses('');
         setRentalIncome('');
         setRentalExpenses('');
-        // Clear local storage
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('taxplanner-')) {
-                localStorage.removeItem(key);
-            }
-        });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -165,7 +170,7 @@ export default function TaxPlannerPage() {
     }
 
     return (
-        <div className="bg-background min-h-[calc(100vh-80px)] py-12">
+        <div className="bg-background min-h-[calc(100vh-80px)] py-12 pt-28">
             <div className="container mx-auto px-4 sm:px-6">
                 <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary bg-card">
                     <CardHeader className="text-center p-8">
@@ -176,7 +181,7 @@ export default function TaxPlannerPage() {
                         <form onSubmit={handleSubmit} className="space-y-8">
                             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                                <div className="space-y-2">
-                                    <Label className="text-base font-semibold">1. Country</Label>
+                                    <Label className="text-base font-semibold flex items-center gap-2"><Globe className="h-4 w-4"/>1. Country</Label>
                                     <Select value={country} onValueChange={setCountry}>
                                         <SelectTrigger className="w-full h-12 text-base">
                                             <SelectValue placeholder="Select a country" />
@@ -190,7 +195,7 @@ export default function TaxPlannerPage() {
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
-                                     <Label className="text-base font-semibold">2. Analysis Type</Label>
+                                     <Label className="text-base font-semibold flex items-center gap-2"><FileType className="h-4 w-4"/>2. Analysis Type</Label>
                                     <Select value={analysisType} onValueChange={setAnalysisType}>
                                          <SelectTrigger className="w-full h-12 text-base">
                                             <SelectValue placeholder="Select analysis type" />
@@ -331,7 +336,7 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="pt-4 text-center">
-                                <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7" disabled={loading}>
+                                <Button type="submit" size="lg" className="w-full max-w-sm text-lg py-7 rounded-full" disabled={loading}>
                                     <Handshake className="mr-2"/> Create My Tax Plan
                                 </Button>
                             </div>
