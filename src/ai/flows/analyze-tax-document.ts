@@ -46,13 +46,13 @@ const AnalyzeTaxDocumentInputSchema = z.object({
 export type AnalyzeTaxDocumentInput = z.infer<typeof AnalyzeTaxDocumentInputSchema>;
 
 const AnalyzeTaxDocumentOutputSchema = z.object({
-  documentTypes: z.array(z.string()).describe('The types of documents identified by the AI.'),
+  documentTypes: z.array(z.string()).describe('The types of documents identified by the AI. If no documents were uploaded, this should contain "Client Questionnaire".'),
   keyFigures: z.array(
     z.object({
       name: z.string().describe('The name of the key figure.'),
       value: z.string().describe('The value of the key figure.'),
     })
-  ).describe('Key financial figures extracted from the documents.'),
+  ).describe('Key financial figures extracted from the documents and/or the structured questionnaire data.'),
   financialHealthSummary: z.string().describe('A narrative summary of the client\'s overall financial health based on all provided documents.'),
   executiveSummary: z.string().describe('A brief, high-level summary of the findings and total potential savings.'),
   whatIfAnalysis: z.string().optional().describe('A dedicated section addressing any "what-if" scenarios or specific questions posed by the user.'),
@@ -87,8 +87,12 @@ Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" c
 Your response must be a professional, client-ready proposal that is highly educational and actionable.
 
 **Core Analysis Instructions:**
-1.  **Identify Document Types:** If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "Balance Sheet", "ITR-V (India)"). Note if documents from multiple years are present, as this indicates a multi-year analysis.
-2.  **Extract Key Financial Figures:** Consolidate and extract the most relevant financial figures from both the structured data and any provided documents. Be comprehensive. Examples: Total Income, Gross Profit, Net Income, Total Deductions, Taxable Income, Key Asset/Liability values, etc.
+1.  **Identify Document Types:**
+    *   If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "ITR-V (India)").
+    *   If NO documents are provided, you MUST return "Client Questionnaire" in the documentTypes array. This is critical.
+2.  **Extract Key Financial Figures:**
+    *   Consolidate and extract the most relevant financial figures from BOTH the structured data and any provided documents.
+    *   Even if no documents are uploaded, you MUST extract key figures from the "Client Questionnaire Data" section below if the fields are filled out. Examples: Total Income, Gross Profit, Total Deductions, etc.
 3.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. Synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
 4.  **Develop In-Depth Tax Strategies (Calculate over 60+ strategies if applicable):** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
     *   A clear "title".

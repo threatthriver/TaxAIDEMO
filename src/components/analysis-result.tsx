@@ -175,9 +175,13 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
-                    {result.documentTypes?.map((docType, index) => (
-                        <p key={index} className="font-mono bg-secondary text-secondary-foreground inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
-                    ))}
+                    {result.documentTypes?.length > 0 ? (
+                        result.documentTypes.map((docType, index) => (
+                            <p key={index} className="font-mono bg-secondary text-secondary-foreground inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
+                        ))
+                    ) : (
+                        <p className="text-muted-foreground text-sm">No documents were uploaded. Analysis is based on questionnaire answers.</p>
+                    )}
                   </CardContent>
                 </Card>
                 <Card className="flex-1">
@@ -185,14 +189,18 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                     <CardTitle className="text-foreground/80 text-xl">Key Figures</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
-                        {result.keyFigures?.map((fig, index) => (
-                        <li key={index} className="flex justify-between text-sm py-2 border-b last:border-b-0">
-                            <span className="text-muted-foreground">{fig.name}</span>
-                            <span className="font-semibold text-foreground">{fig.value}</span>
-                        </li>
-                        ))}
-                    </ul>
+                    {result.keyFigures?.length > 0 ? (
+                        <ul className="space-y-2">
+                            {result.keyFigures.map((fig, index) => (
+                            <li key={index} className="flex justify-between text-sm py-2 border-b last:border-b-0">
+                                <span className="text-muted-foreground">{fig.name}</span>
+                                <span className="font-semibold text-foreground">{fig.value}</span>
+                            </li>
+                            ))}
+                        </ul>
+                     ) : (
+                        <p className="text-muted-foreground text-sm">No specific key figures were extracted from the provided information.</p>
+                    )}
                   </CardContent>
                 </Card>
               </div>
