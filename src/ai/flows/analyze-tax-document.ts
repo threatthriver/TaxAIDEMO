@@ -81,30 +81,50 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   async ( input ) => {
     const {output} = await ai.generate({
       model: googleAI.model(input.model || 'gemini-2.5-pro'),
-      prompt: `You are a world-class tax planning software. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
+      prompt: `You are a world-class tax planning software with advanced OCR capabilities. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
 Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" client for the tax year ${input.taxYear}. You must also consider multi-year and multi-entity planning if the user provides relevant documents or notes.
 
 Your response must be a professional, client-ready proposal that is highly educational and actionable.
 
-**Core Analysis Instructions:**
-1.  **Identify Document Types:**
-    *   If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "ITR-V (India)").
-    *   If NO documents are provided, you MUST return "Client Questionnaire" in the documentTypes array. This is critical.
-2.  **Extract Key Financial Figures:**
-    *   Consolidate and extract the most relevant financial figures from BOTH the structured data and any provided documents.
-    *   Even if no documents are uploaded, you MUST extract key figures from the "Client Questionnaire Data" section below if the fields are filled out. Examples: Total Income, Gross Profit, Total Deductions, etc.
-3.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. Synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
-4.  **Develop In-Depth Tax Strategies (Calculate over 60+ strategies if applicable):** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
+**CRITICAL INSTRUCTIONS:**
+
+1.  **DOCUMENT ANALYSIS IS PRIORITY #1:**
+    *   If documents are provided, you MUST perform detailed OCR and data extraction. This is not optional. Your primary analysis MUST be based on the data extracted from the uploaded documents. The "Client Questionnaire Data" should be used as supplementary or clarifying information only when documents are present.
+    *   Identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "W-2").
+    *   If NO documents are provided, and only then, you MUST return "Client Questionnaire" in the documentTypes array and base your analysis on the questionnaire data.
+
+2.  **EXTRACT KEY FINANCIAL FIGURES (OCR REQUIRED):**
+    *   You MUST extract the most relevant financial figures from the provided documents. This includes, but is not limited to: Total Income, Gross Profit, Total Deductions, Taxable Income, Business Revenue, Investment Gains/Losses, etc. Populate the 'keyFigures' array with these extracted values.
+    *   If no documents are uploaded, extract key figures from the "Client Questionnaire Data" if the fields are filled out.
+
+3.  **ASSESS OVERALL FINANCIAL HEALTH:** Write a detailed narrative under the "Financial Health Summary". Synthesize information from all sources (prioritizing documents) to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
+
+4.  **DEVELOP IN-DEPTH TAX STRATEGIES:** Based on your consolidated analysis of the document data, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
     *   A clear "title".
     *   A detailed "description" that is educational, explaining the strategy, its benefits, pros, and cons.
     *   A concrete, actionable next "step" for the client.
     *   The "relevantSection" of the tax code, law, or form that applies (e.g., "IRC Section 179", "Section 80C of the Income Tax Act, 1961").
     *   A realistic "potentialSavings" estimate as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
-5.  **Address User's Specific Notes (What-If Analysis):**
-${input.additionalNotes ? `The client has provided the following notes, questions, or goals. You MUST address these in a dedicated "whatIfAnalysis" section. This is critical. Directly answer their questions or model the scenarios they've described (e.g., 'What if I contributed an extra $5,000 to my retirement account?'). Your analysis here should be distinct from the main strategy recommendations. Client notes: "${input.additionalNotes}"` : "The client has not provided any specific notes. The whatIfAnalysis field can be omitted."}
-6.  **Generate an Executive Summary:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
 
-**Client Questionnaire Data (Prioritize this structured data):**
+5.  **ADDRESS USER'S SPECIFIC NOTES (What-If Analysis):**
+${input.additionalNotes ? `The client has provided the following notes, questions, or goals. You MUST address these in a dedicated "whatIfAnalysis" section. This is critical. Directly answer their questions or model the scenarios they've described (e.g., 'What if I contributed an extra $5,000 to my retirement account?'). Your analysis here should be distinct from the main strategy recommendations. Client notes: "${input.additionalNotes}"` : "The client has not provided any specific notes. The whatIfAnalysis field can be omitted."}
+
+6.  **GENERATE AN EXECUTIVE SUMMARY:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
+
+---
+**DATA SOURCES**
+
+**1. Uploaded Documents (PRIMARY SOURCE - ANALYZE THESE FIRST):**
+{{#if fileDataUris}}
+The following documents have been uploaded. You are REQUIRED to perform OCR and extract all financial data from them.
+  {{#each fileDataUris}}
+    {{media url=this}}
+  {{/each}}
+{{else}}
+No documents were uploaded. Base your analysis solely on the Client Questionnaire data provided below.
+{{/if}}
+
+**2. Client Questionnaire Data (SUPPLEMENTARY SOURCE):**
 - **Tax Year:** ${input.taxYear || 'Not Provided'}
 - **Income & Investments:**
   - Employment Income: ${input.incomeAndInvestments?.employmentIncome || 'Not Provided'}
@@ -114,22 +134,12 @@ ${input.additionalNotes ? `The client has provided the following notes, question
   - Mortgage Interest: ${input.deductionsAndCredits?.mortgageInterest || 'Not Provided'}
   - Charitable Donations: ${input.deductionsAndCredits?.charitableDonations || 'Not Provided'}
   - Student Loan Interest: ${input.deductionsAndCredits?.studentLoanInterest || 'Not Provided'}
-  - Other Key Deductions: ${input.deductionsAndCredits?.otherDeductions || 'Not Provided'}
+  - Other Key Deductions: ${input.deductionsAndCredits?.otherDDeductions || 'Not Provided'}
 - **Business & Rental Income:**
   - Business Revenue: ${input.businessAndRental?.businessRevenue || 'Not Provided'}
   - Business Expenses: ${input.businessAndRental?.businessExpenses || 'Not Provided'}
   - Rental Income: ${input.businessAndRental?.rentalIncome || 'Not Provided'}
   - Rental Expenses: ${input.businessAndRental?.rentalExpenses || 'Not Provided'}
-
-**Analyze Uploaded Documents (Use as supplementary info):**
-{{#if fileDataUris}}
-The following documents are also provided for your analysis:
-  {{#each fileDataUris}}
-    {{media url=this}}
-  {{/each}}
-{{else}}
-No documents were uploaded. Base your analysis solely on the structured data provided.
-{{/if}}
 `,
       output: {
         schema: AnalyzeTaxDocumentOutputSchema
@@ -139,3 +149,5 @@ No documents were uploaded. Base your analysis solely on the structured data pro
     return output!;
   }
 );
+
+    
