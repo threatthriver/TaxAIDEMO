@@ -8,12 +8,12 @@ const sections = [
   {
     title: 'experiences',
     description: 'Our eyes are set on an entirely new class of AI-centered experiences built for people.',
-    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZW9wbGUlMjBpbiUyMGElMjBtZWV0aW5nfGVufDB8fHx8MTc1Mzk2NTAwOXww&ixlib=rb-4.1.0&q=80&w=1080'
+    image: 'https://placehold.co/1080x720.png'
   },
   {
     title: 'connection',
     description: 'We make beautiful, interconnected experiences that are infused with warmth.',
-    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwZW9wbGUlMjBjcmVhdGluZyUyMGNvbm5lY3Rpb25zfGVufDB8fHx8MTc1Mzk2NTAwOXww&ixlib=rb-4.1.0&q=80&w=1080'
+    image: 'https://placehold.co/1080x720.png'
   }
 ];
 
@@ -21,17 +21,17 @@ const values = [
   {
     title: 'Kindness',
     description: 'Kindness is at the heart of how we conduct ourselves.',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+    image: 'https://placehold.co/400x400.png'
   },
   {
     title: 'Trust',
     description: 'We put our users first and focus on earning their trust.',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+    image: 'https://placehold.co/400x400.png'
   },
   {
     title: 'Quality',
     description: 'We only deliver beautiful, reliable and category-defining products that delight.',
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+    image: 'https://placehold.co/400x400.png'
   },
 ];
 
@@ -96,6 +96,7 @@ export default function AboutPage() {
               layout="fill"
               objectFit="cover"
               className="opacity-20"
+              data-ai-hint="people meeting"
             />
           </motion.div>
         </motion.div>
@@ -142,7 +143,7 @@ export default function AboutPage() {
                       width={150}
                       height={150}
                       className="rounded-full shadow-2xl"
-                      data-ai-hint="cute, abstract image representing a value"
+                      data-ai-hint="abstract technology"
                     />
                   </motion.div>
                 )}

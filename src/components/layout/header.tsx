@@ -77,10 +77,6 @@ export default function Header() {
                   <Logo onClick={() => setIsMenuOpen(false)} />
                 </div>
                 <div className="flex flex-col space-y-6 text-lg">{navLinks}</div>
-                <div className="mt-8 flex flex-col space-y-4">
-                  <Button variant="ghost" className="rounded-full">Log In</Button>
-                  <Button className="rounded-full">Sign Up Free</Button>
-                </div>
               </div>
             </SheetContent>
           </Sheet>
