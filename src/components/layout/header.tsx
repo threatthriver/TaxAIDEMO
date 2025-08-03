@@ -48,6 +48,7 @@ export default function Header() {
       </Link>
       <Link href="/solutions" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">Solutions</Link>
       <Link href="/pricing" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">Pricing</Link>
+      <Link href="/history" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">History</Link>
       <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-muted-foreground hover:text-primary font-medium transition-colors">About</Link>
     </>
   );

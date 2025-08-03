@@ -12,8 +12,10 @@ import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBa
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import dynamic from 'next/dynamic';
+import type { Report } from '@/hooks/use-history';
 
 import { analyzeTaxDocument, type AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
+import { useHistory } from '@/hooks/use-history';
 
 const LoadingState = dynamic(() => import('@/components/loading-state'));
 const AnalysisResultDisplay = dynamic(() => import('@/components/analysis-result'));
@@ -73,6 +75,7 @@ export default function TaxPlannerPage() {
     const [analysisResult, setAnalysisResult] = useState<AnalyzeTaxDocumentOutput | null>(null);
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
+    const { addReport, reports } = useHistory();
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -89,29 +92,6 @@ export default function TaxPlannerPage() {
         setFiles([]);
         setAnalysisResult(null);
         setLoading(false);
-        // Clear local storage by removing items that start with 'taxplanner-'
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('taxplanner-')) {
-                localStorage.removeItem(key);
-            }
-        });
-        // Reset state variables to their defaults, which will re-initialize sticky state
-        setCountry('United States');
-        setAnalysisType('Individual / Personal');
-        setTaxYear(new Date().getFullYear().toString());
-        setModel('gemini-2.5-pro');
-        setAdditionalNotes('');
-        setEmploymentIncome('');
-        setInvestmentIncome('');
-        setRetirementContributions('');
-        setMortgageInterest('');
-        setCharitableDonations('');
-        setStudentLoanInterest('');
-        setOtherDeductions('');
-        setBusinessRevenue('');
-        setBusinessExpenses('');
-        setRentalIncome('');
-        setRentalExpenses('');
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -147,6 +127,16 @@ export default function TaxPlannerPage() {
                     rentalExpenses
                 }
             });
+            
+            // Add to history
+            const newReport: Report = {
+                id: new Date().toISOString(),
+                name: `${analysisType} Report - ${new Date().toLocaleDateString()}`,
+                createdAt: new Date().toISOString(),
+                result: result,
+                inputs: { country, analysisType, taxYear }
+            };
+            addReport(newReport);
 
             setAnalysisResult(result);
         } catch (err: any) {
