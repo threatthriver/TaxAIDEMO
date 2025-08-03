@@ -37,7 +37,11 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                 analysisResult,
                 chatHistory
             });
-            setMessages(prev => [...prev, { role: 'model' as const, content: response }]);
+             if (response) {
+                setMessages(prev => [...prev, { role: 'model' as const, content: response }]);
+             } else {
+                throw new Error("Received an empty response from the assistant.");
+             }
         } catch (err: any) {
             toast({
                 variant: 'destructive',

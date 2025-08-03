@@ -47,53 +47,26 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     
     const handleDownloadPdf = async () => {
         const { default: jsPDF } = await import('jspdf');
+        const { default: html2canvas } = await import('html2canvas');
+
         const content = printRef.current;
         if (!content) return;
-
-        const doc = new jsPDF({
-            orientation: 'p',
-            unit: 'pt',
-            format: 'a4',
+        
+        const canvas = await html2canvas(content, {
+            scale: 2, // Higher scale for better quality
+            useCORS: true,
+            logging: false,
         });
 
-        const title = content.querySelector('h1')?.innerText || 'Your AI-Generated Financial Plan';
-        const generatedDate = content.querySelector('p')?.innerText || new Date().toLocaleDateString();
-
-        let y = 40;
-        doc.setFontSize(22);
-        doc.text(title, 40, y);
-        y += 20;
-        doc.setFontSize(10);
-        doc.text(generatedDate, 40, y);
-        y += 30;
-
-        const sections = content.querySelectorAll('main > .bg-card, main > .bg-primary\\/5, main > .bg-secondary\\/50, main > div');
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: [canvas.width, canvas.height]
+        });
         
-        for (const section of Array.from(sections)) {
-            const sectionTitle = (section.querySelector('h2, .card-title') as HTMLElement)?.innerText;
-            if (sectionTitle) {
-                doc.setFontSize(16);
-                doc.text(sectionTitle, 40, y);
-                y += 20;
-            }
-
-            const paragraphs = section.querySelectorAll('p, li');
-            paragraphs.forEach(p => {
-                 const text = (p as HTMLElement).innerText;
-                 const lines = doc.splitTextToSize(text, 515); // 595 (A4 width) - 80 (margins)
-                 doc.setFontSize(10);
-                 doc.text(lines, 40, y);
-                 y += lines.length * 12 + 6;
-                 if (y > 800) { // New page
-                     doc.addPage();
-                     y = 40;
-                 }
-            });
-             y += 20;
-             if (y > 800) { doc.addPage(); y = 40; }
-        }
-
-        doc.save('Tax-Analysis-Report.pdf');
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('Tax-Analysis-Report.pdf');
     };
 
     const chartData = result.strategies.map(strategy => ({
