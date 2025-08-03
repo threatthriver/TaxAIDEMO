@@ -23,11 +23,14 @@ export default function ReportDetailPage() {
 
     useEffect(() => {
         setIsMounted(true);
-        if (id) {
+    }, []);
+
+    useEffect(() => {
+        if (isMounted && id) {
             const foundReport = getReportById(id);
             setReport(foundReport);
         }
-    }, [id, getReportById]);
+    }, [id, getReportById, isMounted]);
 
     if (!isMounted) {
         return <LoadingState />;
@@ -55,4 +58,3 @@ export default function ReportDetailPage() {
     
     return <AnalysisResultDisplay result={report.result} onReset={() => router.push('/planner')} />;
 }
-
