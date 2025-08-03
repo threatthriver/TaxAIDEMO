@@ -81,26 +81,24 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   async ( input ) => {
     const {output} = await ai.generate({
       model: googleAI.model(input.model || 'gemini-2.5-pro'),
-      tools: [{tool: googleAI.tool.googleSearch()}],
       prompt: `You are a world-class tax planning software. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
 Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" client for the tax year ${input.taxYear}. You must also consider multi-year and multi-entity planning if the user provides relevant documents or notes.
 
 Your response must be a professional, client-ready proposal that is highly educational and actionable.
 
 **Core Analysis Instructions:**
-1.  **Use Web Search for Accuracy:** You MUST use the provided web search tool to find the most recent tax laws and financial information relevant to the user's country and situation. This is critical for ensuring your recommendations are up-to-date.
-2.  **Identify Document Types:** If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "Balance Sheet", "ITR-V (India)"). Note if documents from multiple years are present, as this indicates a multi-year analysis.
-3.  **Extract Key Financial Figures:** Consolidate and extract the most relevant financial figures from both the structured data and any provided documents. Be comprehensive. Examples: Total Income, Gross Profit, Net Income, Total Deductions, Taxable Income, Key Asset/Liability values, etc.
-4.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. Synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
-5.  **Develop In-Depth Tax Strategies (Calculate over 60+ strategies if applicable):** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
+1.  **Identify Document Types:** If documents are provided, thoroughly identify the type of each document (e.g., "US Form 1040", "Profit and Loss Statement", "Balance Sheet", "ITR-V (India)"). Note if documents from multiple years are present, as this indicates a multi-year analysis.
+2.  **Extract Key Financial Figures:** Consolidate and extract the most relevant financial figures from both the structured data and any provided documents. Be comprehensive. Examples: Total Income, Gross Profit, Net Income, Total Deductions, Taxable Income, Key Asset/Liability values, etc.
+3.  **Assess Overall Financial Health:** Write a detailed narrative under the "Financial Health Summary". This is crucial. Synthesize information from all sources to provide a clear picture of the client's financial situation, including strengths, weaknesses, trends, and potential areas of concern.
+4.  **Develop In-Depth Tax Strategies (Calculate over 60+ strategies if applicable):** Based on your consolidated analysis, generate a list of specific, actionable tax-saving strategies highly relevant to ${input.country}'s tax laws and the client's specific situation. For each strategy, you MUST provide:
     *   A clear "title".
     *   A detailed "description" that is educational, explaining the strategy, its benefits, pros, and cons.
     *   A concrete, actionable next "step" for the client.
     *   The "relevantSection" of the tax code, law, or form that applies (e.g., "IRC Section 179", "Section 80C of the Income Tax Act, 1961").
     *   A realistic "potentialSavings" estimate as a string (e.g., "$2,000 - $3,000" or "₹50,000 - ₹75,000").
-6.  **Address User's Specific Notes (What-If Analysis):**
+5.  **Address User's Specific Notes (What-If Analysis):**
 ${input.additionalNotes ? `The client has provided the following notes, questions, or goals. You MUST address these in a dedicated "whatIfAnalysis" section. This is critical. Directly answer their questions or model the scenarios they've described (e.g., 'What if I contributed an extra $5,000 to my retirement account?'). Your analysis here should be distinct from the main strategy recommendations. Client notes: "${input.additionalNotes}"` : "The client has not provided any specific notes. The whatIfAnalysis field can be omitted."}
-7.  **Generate an Executive Summary:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
+6.  **Generate an Executive Summary:** Create a brief, high-level summary of the key findings and the total estimated potential tax savings AFTER completing all other analysis steps. This should be concise and impactful.
 
 **Client Questionnaire Data (Prioritize this structured data):**
 - **Tax Year:** ${input.taxYear || 'Not Provided'}
