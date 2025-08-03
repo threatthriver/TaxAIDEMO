@@ -39,6 +39,11 @@ export default function AboutPage() {
   const { scrollYProgress } = useScroll();
   const [currentSection, setCurrentSection] = useState(0);
   const [hoveredValue, setHoveredValue] = useState<number | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.on('change', (latest) => {
@@ -53,6 +58,10 @@ export default function AboutPage() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
 
   const safeCurrentSection = sections[currentSection] || sections[0];
+  
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="bg-[#f5f3ef] min-h-screen text-[#3a3a3a]">
