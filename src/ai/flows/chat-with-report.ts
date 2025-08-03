@@ -40,7 +40,14 @@ const chatWithReportFlow = ai.defineFlow(
 
     const systemPrompt = `You are an expert financial assistant. Your role is to answer follow-up questions from the user based on the detailed financial analysis report provided below.
 Be helpful, clear, and concise. Do not provide financial advice, but explain concepts and the information in the report clearly.
-Base your answers ONLY on the provided report context. If the user asks a question that cannot be answered from the report, you may use the provided web search tool to find the answer, but you must state that the information comes from a web search.
+Base your answers ONLY on the provided report context.
+
+**Web Search Instructions:**
+If the user asks a question that CANNOT be answered from the report, you MUST use the provided web search tool to find an answer.
+When you use web search, you MUST:
+1.  Clearly state that the information comes from a web search and is not part of their personal report (e.g., "I looked this up online and found that...").
+2.  Format the answer in a clean, readable way. Use bullet points or short paragraphs.
+3.  Synthesize the information into a helpful response. Do not just copy-paste search results.
 
 Here is the user's financial report:
 \`\`\`json
