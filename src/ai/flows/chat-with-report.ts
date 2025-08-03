@@ -56,7 +56,7 @@ ${JSON.stringify(analysisResult, null, 2)}
 
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-flash'),
-      tools: [{tool: googleAI.tool.googleSearch}],
+      tools: [{tool: googleAI.tool.googleSearch()}],
       history: [
         { role: 'system', content: systemPrompt },
         ...chatHistory.map(msg => ({ role: msg.role, content: msg.content }))
