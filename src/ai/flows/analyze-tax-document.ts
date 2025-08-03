@@ -11,7 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { googleAI, googleSearch } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 
 const AnalyzeTaxDocumentInputSchema = z.object({
   fileDataUris: z
@@ -80,7 +80,7 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   async ( input ) => {
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-pro'),
-      tools: [googleSearch],
+      tools: [googleAI.tool.googleSearch],
       prompt: `You are a world-class tax planning software. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
 Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" client for the tax year ${input.taxYear}. You must also consider multi-year and multi-entity planning if the user provides relevant documents or notes.
 

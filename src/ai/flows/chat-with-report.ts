@@ -11,7 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { googleAI, googleSearch } from '@genkit-ai/googleai';
+import { googleAI } from '@genkit-ai/googleai';
 import type { AnalyzeTaxDocumentOutput } from './analyze-tax-document';
 
 
@@ -56,7 +56,7 @@ ${JSON.stringify(analysisResult, null, 2)}
 
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-flash'),
-      tools: [googleSearch],
+      tools: [googleAI.tool.googleSearch],
       history: [
         { role: 'system', content: systemPrompt },
         ...chatHistory.map(msg => ({ role: msg.role, content: msg.content }))

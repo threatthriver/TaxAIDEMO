@@ -1,11 +1,12 @@
 
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, ClipboardList, FileText, Users, Calculator, FileDown, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 
 const FeatureCard = ({ icon, title, children }: { icon: React.ReactNode, title: string; children: React.ReactNode }) => (
@@ -46,11 +47,9 @@ export default function HomePage() {
               Streamline your tax strategy. Upload documents or fill out our questionnaire to generate a comprehensive, professional tax plan in minutes.
             </p>
             <div className="flex justify-center gap-4">
-                <Link href="/planner">
-                <Button size="lg" className="px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full">
+                <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full")}>
                     Create My Tax Plan
                     <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
                 </Link>
                 <Link href="/solutions">
                 <Button size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold rounded-full">
