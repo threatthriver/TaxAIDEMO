@@ -10,9 +10,9 @@ import { cn } from '@/lib/utils';
 
 
 const FeatureCard = ({ icon, title, children, className }: { icon: React.ReactNode, title: string; children: React.ReactNode, className?: string }) => (
-  <Card className={cn("bg-card p-4 text-left shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-primary/20 hover:border-primary", className)}>
+  <Card className={cn("bg-card/60 p-4 text-left shadow-none transition-shadow duration-300 border-0", className)}>
     <CardHeader className="flex flex-row items-center gap-4">
-      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
         {icon}
       </div>
       <CardTitle className="text-xl font-semibold">{title}</CardTitle>

@@ -10,14 +10,12 @@ const solutions = [
         title: "For Individuals",
         description: "Optimize your personal finances and maximize your tax returns with our intuitive tools.",
         features: ["W-2 & 1099 Analysis", "Investment & Capital Gains", "Deduction Finder"],
-        borderColor: "border-t-blue-500"
     },
     {
         icon: <Briefcase className="h-8 w-8 text-primary"/>,
         title: "For Small Businesses / LLCs",
         description: "Streamline your business taxes, from expense tracking to payroll and profit analysis.",
         features: ["P&L and Balance Sheet Analysis", "Expense Categorization", "Quarterly Tax Estimates"],
-        borderColor: "border-t-green-500",
         highlight: true
     },
     {
@@ -25,7 +23,6 @@ const solutions = [
         title: "For Corporations",
         description: "Comprehensive tax planning for complex corporate structures and multi-entity enterprises.",
         features: ["Multi-Year Strategic Planning", "R&D Tax Credits", "International Tax Analysis"],
-        borderColor: "border-t-purple-500"
     }
 ]
 
@@ -46,7 +43,7 @@ export default function SolutionsPage() {
                     {solutions.map((solution, index) => (
                         <Card 
                             key={solution.title} 
-                            className={`shadow-lg hover:shadow-xl transition-shadow animate-scale-in border-t-4 ${solution.borderColor} ${solution.highlight ? 'border-2 border-primary' : ''}`} 
+                            className={`bg-card/60 shadow-none border-0 transition-shadow animate-scale-in ${solution.highlight ? 'ring-2 ring-primary' : ''}`} 
                             style={{animationDelay: `${index * 0.2}s`, animationFillMode: 'both'}}
                         >
                             <CardHeader className="text-center">
