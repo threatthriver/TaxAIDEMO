@@ -4,7 +4,6 @@
 import type { AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
 import React, { useState, useRef } from 'react';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -12,8 +11,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { ArrowLeft, CheckCircle, FileText, Lightbulb, TrendingUp, Download, HelpCircle } from 'lucide-react';
-import ChatAssistant from '@/components/chat-assistant';
 import { Badge } from '@/components/ui/badge';
+import dynamic from 'next/dynamic';
+
+const ChatAssistant = dynamic(() => import('@/components/chat-assistant'));
+
 
 type AnalysisResultDisplayProps = {
   result: AnalyzeTaxDocumentOutput;
@@ -54,20 +56,44 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
             format: 'a4',
         });
 
-        doc.html(content, {
-            callback: function (doc) {
-                doc.save('Tax-Analysis-Report.pdf');
-            },
-            html2canvas: {
-                scale: 0.7, // Adjust scale to fit content on the page
-                useCORS: true,
-                logging: true
-            },
-            x: 15,
-            y: 15,
-            width: 555, // A4 width in points is 595, minus margins
-            windowWidth: content.scrollWidth,
-        });
+        const title = content.querySelector('h1')?.innerText || 'Your AI-Generated Financial Plan';
+        const generatedDate = content.querySelector('p')?.innerText || new Date().toLocaleDateString();
+
+        let y = 40;
+        doc.setFontSize(22);
+        doc.text(title, 40, y);
+        y += 20;
+        doc.setFontSize(10);
+        doc.text(generatedDate, 40, y);
+        y += 30;
+
+        const sections = content.querySelectorAll('main > .bg-card, main > .bg-primary\\/5, main > .bg-secondary\\/50, main > div');
+        
+        for (const section of Array.from(sections)) {
+            const sectionTitle = (section.querySelector('h2, .card-title') as HTMLElement)?.innerText;
+            if (sectionTitle) {
+                doc.setFontSize(16);
+                doc.text(sectionTitle, 40, y);
+                y += 20;
+            }
+
+            const paragraphs = section.querySelectorAll('p, li');
+            paragraphs.forEach(p => {
+                 const text = (p as HTMLElement).innerText;
+                 const lines = doc.splitTextToSize(text, 515); // 595 (A4 width) - 80 (margins)
+                 doc.setFontSize(10);
+                 doc.text(lines, 40, y);
+                 y += lines.length * 12 + 6;
+                 if (y > 800) { // New page
+                     doc.addPage();
+                     y = 40;
+                 }
+            });
+             y += 20;
+             if (y > 800) { doc.addPage(); y = 40; }
+        }
+
+        doc.save('Tax-Analysis-Report.pdf');
     };
 
     const chartData = result.strategies.map(strategy => ({
@@ -182,7 +208,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                                 <BarChart data={chartData} layout="vertical" margin={{ top: 5, right: 30, left: 50, bottom: 5 }}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis type="number" tickFormatter={(value) => `$${Number(value).toLocaleString()}`} />
-                                    <YAxis dataKey="name" type="category" width={150} interval={0} tick={{fontSize: 12, fill: '#374151'}} />
+                                    <YAxis dataKey="name" type="category" width={150} interval={0} tick={{fontSize: 12, fill: 'hsl(var(--muted-foreground))'}} />
                                     <Tooltip
                                         cursor={{fill: 'rgba(243, 244, 246, 0.5)'}}
                                         content={<ChartTooltipContent

@@ -51,10 +51,8 @@ export default function HomePage() {
                     Create My Tax Plan
                     <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
-                <Link href="/solutions">
-                <Button size="lg" variant="outline" className="px-10 py-7 text-lg font-semibold rounded-full">
+                <Link href="/solutions" className={cn(buttonVariants({ size: 'lg', variant: 'outline' }), "px-10 py-7 text-lg font-semibold rounded-full")}>
                     Learn More
-                </Button>
                 </Link>
             </div>
           </div>
@@ -108,11 +106,9 @@ export default function HomePage() {
             <p className="text-xl text-muted-foreground mt-4 max-w-3xl mx-auto">
                 Stop leaving money on the table. Generate your personalized, AI-powered tax plan today and discover your potential savings.
             </p>
-            <Link href="/planner">
-              <Button size="lg" className="mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full">
+            <Link href="/planner" className={cn(buttonVariants({ size: 'lg' }), "mt-8 px-10 py-7 text-lg font-semibold shadow-lg hover:shadow-xl transition-shadow rounded-full")}>
                 Start My Free Analysis
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
             </Link>
         </div>
       </section>
