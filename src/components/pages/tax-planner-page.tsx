@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -26,26 +26,45 @@ const fileToDataUri = (file: File): Promise<string> => new Promise((resolve, rej
     reader.readAsDataURL(file);
 });
 
+// Helper for localStorage
+const useStickyState = (defaultValue: any, key: string) => {
+    const [value, setValue] = useState(defaultValue);
+
+    useEffect(() => {
+        const stickyValue = window.localStorage.getItem(key);
+        if (stickyValue !== null) {
+            setValue(JSON.parse(stickyValue));
+        }
+    }, [key]);
+
+    useEffect(() => {
+        window.localStorage.setItem(key, JSON.stringify(value));
+    }, [key, value]);
+
+    return [value, setValue];
+};
+
+
 export default function TaxPlannerPage() {
     const [files, setFiles] = useState<File[]>([]);
-    const [country, setCountry] = useState('United States');
-    const [analysisType, setAnalysisType] = useState('Individual / Personal');
-    const [taxYear, setTaxYear] = useState(new Date().getFullYear().toString());
-    const [model, setModel] = useState('gemini-2.5-pro');
-    const [additionalNotes, setAdditionalNotes] = useState('');
+    const [country, setCountry] = useStickyState('United States', 'taxplanner-country');
+    const [analysisType, setAnalysisType] = useStickyState('Individual / Personal', 'taxplanner-analysisType');
+    const [taxYear, setTaxYear] = useStickyState(new Date().getFullYear().toString(), 'taxplanner-taxYear');
+    const [model, setModel] = useStickyState('gemini-2.5-pro', 'taxplanner-model');
+    const [additionalNotes, setAdditionalNotes] = useStickyState('', 'taxplanner-additionalNotes');
     
     // State for new structured data fields
-    const [employmentIncome, setEmploymentIncome] = useState('');
-    const [investmentIncome, setInvestmentIncome] = useState('');
-    const [retirementContributions, setRetirementContributions] = useState('');
-    const [mortgageInterest, setMortgageInterest] = useState('');
-    const [charitableDonations, setCharitableDonations] = useState('');
-    const [studentLoanInterest, setStudentLoanInterest] = useState('');
-    const [otherDeductions, setOtherDeductions] = useState('');
-    const [businessRevenue, setBusinessRevenue] = useState('');
-    const [businessExpenses, setBusinessExpenses] = useState('');
-    const [rentalIncome, setRentalIncome] = useState('');
-    const [rentalExpenses, setRentalExpenses] = useState('');
+    const [employmentIncome, setEmploymentIncome] = useStickyState('', 'taxplanner-employmentIncome');
+    const [investmentIncome, setInvestmentIncome] = useStickyState('', 'taxplanner-investmentIncome');
+    const [retirementContributions, setRetirementContributions] = useStickyState('', 'taxplanner-retirementContributions');
+    const [mortgageInterest, setMortgageInterest] = useStickyState('', 'taxplanner-mortgageInterest');
+    const [charitableDonations, setCharitableDonations] = useStickyState('', 'taxplanner-charitableDonations');
+    const [studentLoanInterest, setStudentLoanInterest] = useStickyState('', 'taxplanner-studentLoanInterest');
+    const [otherDeductions, setOtherDeductions] = useStickyState('', 'taxplanner-otherDeductions');
+    const [businessRevenue, setBusinessRevenue] = useStickyState('', 'taxplanner-businessRevenue');
+    const [businessExpenses, setBusinessExpenses] = useStickyState('', 'taxplanner-businessExpenses');
+    const [rentalIncome, setRentalIncome] = useStickyState('', 'taxplanner-rentalIncome');
+    const [rentalExpenses, setRentalExpenses] = useStickyState('', 'taxplanner-rentalExpenses');
 
     const [analysisResult, setAnalysisResult] = useState<AnalyzeTaxDocumentOutput | null>(null);
     const [loading, setLoading] = useState(false);
@@ -66,6 +85,10 @@ export default function TaxPlannerPage() {
         setFiles([]);
         setAnalysisResult(null);
         setLoading(false);
+        setCountry('United States');
+        setAnalysisType('Individual / Personal');
+        setTaxYear(new Date().getFullYear().toString());
+        setModel('gemini-2.5-pro');
         setAdditionalNotes('');
         setEmploymentIncome('');
         setInvestmentIncome('');
@@ -78,6 +101,12 @@ export default function TaxPlannerPage() {
         setBusinessExpenses('');
         setRentalIncome('');
         setRentalExpenses('');
+        // Clear local storage
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('taxplanner-')) {
+                localStorage.removeItem(key);
+            }
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -312,3 +341,5 @@ export default function TaxPlannerPage() {
             </div>
         </div>
     );
+}
+    
