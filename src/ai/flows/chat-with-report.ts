@@ -11,7 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { googleAI } from '@genkit-ai/googleai';
+import { googleAI, googleSearch } from '@genkit-ai/googleai';
 import type { AnalyzeTaxDocumentOutput } from './analyze-tax-document';
 
 
@@ -40,7 +40,7 @@ const chatWithReportFlow = ai.defineFlow(
 
     const systemPrompt = `You are an expert financial assistant. Your role is to answer follow-up questions from the user based on the detailed financial analysis report provided below.
 Be helpful, clear, and concise. Do not provide financial advice, but explain concepts and the information in the report clearly.
-Base your answers ONLY on the provided report context. If the user asks a question that cannot be answered from the report, politely state that the information is not available in their analysis.
+Base your answers ONLY on the provided report context. If the user asks a question that cannot be answered from the report, you may use the provided web search tool to find the answer, but you must state that the information comes from a web search.
 
 Here is the user's financial report:
 \`\`\`json
@@ -49,6 +49,7 @@ ${JSON.stringify(analysisResult, null, 2)}
 
     const {output} = await ai.generate({
       model: googleAI.model('gemini-2.5-flash'),
+      tools: [googleSearch],
       history: [
         { role: 'system', content: systemPrompt },
         ...chatHistory.map(msg => ({ role: msg.role, content: msg.content }))
