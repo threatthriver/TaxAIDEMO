@@ -35,15 +35,10 @@ const parseSavings = (savings: string): number => {
 
 
 export default function HistoryPage() {
-    const { reports, deleteReport, updateReportName } = useHistory();
-    const [isMounted, setIsMounted] = useState(false);
+    const { reports, deleteReport, updateReportName, isMounted } = useHistory();
     const [editingReportId, setEditingReportId] = useState<string | null>(null);
     const [newName, setNewName] = useState('');
     const router = useRouter();
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
 
     const handleViewReport = (report: Report) => {
         router.push(`/history/${report.id}`);
@@ -63,7 +58,7 @@ export default function HistoryPage() {
     };
     
     if (!isMounted) {
-        return null;
+        return null; // or a loading skeleton
     }
 
     const sortedReports = [...reports].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

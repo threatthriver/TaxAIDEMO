@@ -102,7 +102,7 @@ export default function AboutPage() {
             <Image
               src={safeCurrentSection.image}
               alt={safeCurrentSection.title}
-              layout="fill"
+              fill
               objectFit="cover"
               className="opacity-20"
               data-ai-hint="people meeting"

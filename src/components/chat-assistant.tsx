@@ -26,12 +26,13 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
         if (!input.trim() || loading) return;
 
         const userMessage = { role: 'user' as const, content: input };
-        setMessages(prev => [...prev, userMessage]);
+        const newMessages = [...messages, userMessage];
+        setMessages(newMessages);
         setInput('');
         setLoading(true);
 
         try {
-            const chatHistory = [...messages, userMessage];
+            const chatHistory = newMessages;
             const response = await chatWithReport({
                 analysisResult,
                 chatHistory
@@ -43,7 +44,7 @@ const ChatAssistant = ({ analysisResult }: { analysisResult: AnalyzeTaxDocumentO
                 title: 'Chat Error',
                 description: 'Failed to get a response from the assistant.',
             });
-             setMessages(prev => prev.slice(0, -1)); // remove optimistic user message
+             setMessages(prev => prev.slice(0, -1)); // remove optimistic user message on failure
         } finally {
             setLoading(false);
             if (!hasStartedChat) {

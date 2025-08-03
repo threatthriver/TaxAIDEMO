@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import type { Report } from '@/hooks/use-history';
 
 const AnalysisResultDisplay = dynamic(() => import('@/components/analysis-result'));
 const LoadingState = dynamic(() => import('@/components/loading-state'));
@@ -15,8 +16,8 @@ const LoadingState = dynamic(() => import('@/components/loading-state'));
 export default function ReportDetailPage() {
     const router = useRouter();
     const params = useParams();
-    const { getReportById } = useHistory();
-    const [report, setReport] = useState(null);
+    const { getReportById, isMounted: historyIsMounted } = useHistory();
+    const [report, setReport] = useState<Report | null | undefined>(undefined);
     const [isMounted, setIsMounted] = useState(false);
 
     const id = params.id as string;
@@ -26,17 +27,17 @@ export default function ReportDetailPage() {
     }, []);
 
     useEffect(() => {
-        if (isMounted && id) {
+        if (historyIsMounted && id) {
             const foundReport = getReportById(id);
             setReport(foundReport);
         }
-    }, [id, getReportById, isMounted]);
+    }, [id, getReportById, historyIsMounted]);
 
-    if (!isMounted) {
+    if (!isMounted || report === undefined) {
         return <LoadingState />;
     }
 
-    if (!report) {
+    if (report === null) {
         return (
              <div className="container mx-auto px-4 sm:px-6 py-20 text-center">
                 <Card className="max-w-lg mx-auto">
