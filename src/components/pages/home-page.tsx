@@ -27,7 +27,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-background pt-24 md:pt-32 relative overflow-hidden">
+      <section className="bg-background pt-12 md:pt-20 relative overflow-hidden">
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10"

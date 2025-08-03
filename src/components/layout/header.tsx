@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -27,6 +27,15 @@ const Logo = ({ onClick }: { onClick?: () => void }) => (
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = (
     <>
@@ -46,8 +55,9 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-300">
        <nav className={cn(
-        "container mx-auto px-6 py-3 flex justify-between items-center rounded-full border transition-all duration-500",
-        "bg-card/80 backdrop-blur-lg shadow-lg border-border/20",
+        "container mx-auto px-6 flex justify-between items-center rounded-full border transition-all duration-300",
+        isScrolled ? "py-2 shadow-xl" : "py-3 shadow-lg",
+        "bg-card/80 backdrop-blur-lg border-border/20",
        )}>
         <Logo onClick={() => setIsMenuOpen(false)} />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>

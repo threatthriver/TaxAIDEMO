@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className={`font-sans antialiased`}>
         <Header />
-        <main>{children}</main>
+        <main className="pt-24">{children}</main>
         <Footer />
         <Toaster />
       </body>

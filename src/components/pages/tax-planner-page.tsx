@@ -170,7 +170,7 @@ export default function TaxPlannerPage() {
     }
 
     return (
-        <div className="bg-background min-h-[calc(100vh-80px)] py-12 pt-28">
+        <div className="bg-background min-h-screen py-12">
             <div className="container mx-auto px-4 sm:px-6">
                 <Card className="max-w-4xl mx-auto shadow-2xl border-t-4 border-primary bg-card">
                     <CardHeader className="text-center p-8">
@@ -347,4 +347,3 @@ export default function TaxPlannerPage() {
         </div>
     );
 }
-    
