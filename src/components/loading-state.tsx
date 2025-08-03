@@ -56,12 +56,12 @@ export default function LoadingState() {
 
                 <div className="w-full max-w-lg mx-auto">
                     <Progress value={progress} className="w-full h-2 mb-4" />
-                    <div className="relative h-8 overflow-hidden">
+                     <div className="relative h-8">
                          {analysisSteps.map((step, index) => (
                             <div
                                 key={index}
-                                className="absolute w-full transition-transform duration-500 ease-in-out flex items-center justify-center gap-3"
-                                style={{ transform: `translateY(${(index - currentStep) * 100}%)` }}
+                                className="absolute w-full transition-opacity duration-500 ease-in-out flex items-center justify-center gap-3"
+                                style={{ opacity: index === currentStep ? 1 : 0 }}
                             >
                                 {step.icon}
                                 <span className="text-muted-foreground text-lg">{step.text}</span>
