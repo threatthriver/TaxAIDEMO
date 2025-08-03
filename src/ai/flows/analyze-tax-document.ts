@@ -23,6 +23,7 @@ const AnalyzeTaxDocumentInputSchema = z.object({
   analysisType: z.string().describe('The type of analysis requested (Individual/Personal, Small Business/LLC, Corporation).'),
   taxYear: z.string().optional().describe('The primary tax year for the analysis. The AI should also consider multi-year plans if documents from other years are provided.'),
   additionalNotes: z.string().optional().describe('Optional user-provided notes, questions, or goals to guide the analysis, including "what-if" scenarios.'),
+  model: z.string().optional().describe('The AI model to use for the analysis.'),
   // New Structured Inputs
   incomeAndInvestments: z.object({
     employmentIncome: z.string().optional(),
@@ -79,7 +80,7 @@ const analyzeTaxDocumentFlow = ai.defineFlow(
   },
   async ( input ) => {
     const {output} = await ai.generate({
-      model: googleAI.model('gemini-2.5-pro'),
+      model: googleAI.model(input.model || 'gemini-2.5-pro'),
       tools: [googleAI.tool.googleSearch],
       prompt: `You are a world-class tax planning software. Your purpose is to provide a comprehensive, automated, and streamlined tax plan for clients in ${input.country}.
 Your task is to conduct a multi-faceted analysis for a "${input.analysisType}" client for the tax year ${input.taxYear}. You must also consider multi-year and multi-entity planning if the user provides relevant documents or notes.

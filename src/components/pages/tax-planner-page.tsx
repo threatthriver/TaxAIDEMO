@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays } from 'lucide-react';
+import { UploadCloud, XCircle, File as FileIcon, Landmark, TrendingDown, PiggyBank, Handshake, CalendarDays, Bot } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import dynamic from 'next/dynamic';
@@ -31,6 +31,7 @@ export default function TaxPlannerPage() {
     const [country, setCountry] = useState('United States');
     const [analysisType, setAnalysisType] = useState('Individual / Personal');
     const [taxYear, setTaxYear] = useState(new Date().getFullYear().toString());
+    const [model, setModel] = useState('gemini-2.5-pro');
     const [additionalNotes, setAdditionalNotes] = useState('');
     
     // State for new structured data fields
@@ -93,6 +94,7 @@ export default function TaxPlannerPage() {
                 analysisType,
                 taxYear,
                 additionalNotes,
+                model,
                 incomeAndInvestments: {
                     employmentIncome,
                     investmentIncome,
@@ -143,7 +145,7 @@ export default function TaxPlannerPage() {
                     </CardHeader>
                     <CardContent className="p-8">
                         <form onSubmit={handleSubmit} className="space-y-8">
-                            <div className="grid md:grid-cols-3 gap-6">
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                                <div className="space-y-2">
                                     <Label className="text-base font-semibold">1. Country</Label>
                                     <Select value={country} onValueChange={setCountry}>
@@ -175,10 +177,22 @@ export default function TaxPlannerPage() {
                                      <Label htmlFor="taxYear" className="text-base font-semibold flex items-center gap-2"><CalendarDays className="h-4 w-4"/>3. Tax Year</Label>
                                      <Input id="taxYear" className="h-12 text-base" placeholder="e.g., 2023" value={taxYear} onChange={e => setTaxYear(e.target.value)} />
                                  </div>
+                                 <div className="space-y-2">
+                                     <Label htmlFor="model" className="text-base font-semibold flex items-center gap-2"><Bot className="h-4 w-4"/>4. Select Model</Label>
+                                    <Select value={model} onValueChange={setModel}>
+                                         <SelectTrigger className="w-full h-12 text-base">
+                                            <SelectValue placeholder="Select model" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="gemini-2.5-pro">Gemini 2.5 Pro (Quality)</SelectItem>
+                                            <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash (Speed)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                 </div>
                             </div>
                             
                             <div className="space-y-2">
-                                 <Label className="text-base font-semibold">4. Financial Details (Optional)</Label>
+                                 <Label className="text-base font-semibold">5. Financial Details (Optional)</Label>
                                  <p className="text-sm text-muted-foreground">The more details you provide, the better the analysis. You can still upload documents below.</p>
                                  <Accordion type="multiple" className="w-full">
                                     <AccordionItem value="item-1">
@@ -244,7 +258,7 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="space-y-4">
-                                 <Label className="text-base font-semibold">5. Upload Documents (Optional)</Label>
+                                 <Label className="text-base font-semibold">6. Upload Documents (Optional)</Label>
                                  <p className="text-sm text-muted-foreground">Supplement the data above by uploading documents. Our AI supports multi-year analysis if you upload files from different years.</p>
                                 <Label htmlFor="file-upload" className="relative cursor-pointer flex flex-col items-center justify-center w-full min-h-40 p-4 border-2 border-dashed rounded-lg hover:bg-muted/50 transition-colors">
                                     {files.length === 0 ? (
@@ -277,7 +291,7 @@ export default function TaxPlannerPage() {
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="additional-notes" className="text-base font-semibold">6. Additional Notes &amp; "What-If" Scenarios (Optional)</Label>
+                              <Label htmlFor="additional-notes" className="text-base font-semibold">7. Additional Notes &amp; "What-If" Scenarios (Optional)</Label>
                               <Textarea
                                   id="additional-notes"
                                   placeholder="e.g., What if I contributed an extra $5,000 to my retirement account? or I'm starting a side business, what should I consider?"
@@ -298,5 +312,3 @@ export default function TaxPlannerPage() {
             </div>
         </div>
     );
-
-    
