@@ -13,6 +13,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContaine
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { ArrowLeft, CheckCircle, FileText, Lightbulb, TrendingUp, Download, HelpCircle } from 'lucide-react';
 import ChatAssistant from '@/components/chat-assistant';
+import { Badge } from '@/components/ui/badge';
 
 type AnalysisResultDisplayProps = {
   result: AnalyzeTaxDocumentOutput;
@@ -44,24 +45,29 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     const progressPercentage = result.strategies.length > 0 ? (completedCount / result.strategies.length) * 100 : 0;
     
     const handleDownloadPdf = async () => {
-        const element = printRef.current;
-        if (!element) return;
-    
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            logging: true,
-            useCORS: true,
-            backgroundColor: null
-        });
-        
-        const pdf = new jsPDF({
+        const content = printRef.current;
+        if (!content) return;
+
+        const doc = new jsPDF({
             orientation: 'p',
-            unit: 'px',
-            format: [canvas.width, canvas.height]
+            unit: 'pt',
+            format: 'a4',
         });
-        
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save('Tax-Analysis-Report.pdf');
+
+        doc.html(content, {
+            callback: function (doc) {
+                doc.save('Tax-Analysis-Report.pdf');
+            },
+            html2canvas: {
+                scale: 0.7, // Adjust scale to fit content on the page
+                useCORS: true,
+                logging: true
+            },
+            x: 15,
+            y: 15,
+            width: 555, // A4 width in points is 595, minus margins
+            windowWidth: content.scrollWidth,
+        });
     };
 
     const chartData = result.strategies.map(strategy => ({
@@ -86,7 +92,13 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
             </div>
           <div ref={printRef} className="bg-card p-6 sm:p-10 rounded-xl shadow-lg">
             <header className="mb-10">
-              <h1 className="text-4xl font-extrabold text-foreground">Your AI-Generated Financial Plan</h1>
+                <div className="flex items-center gap-4 mb-2">
+                    <h1 className="text-4xl font-extrabold text-foreground tracking-tight">Your AI-Generated Financial Plan</h1>
+                    <Badge variant="outline" className="text-sm font-semibold border-primary/50 text-primary/80">
+                        Preview
+                    </Badge>
+                </div>
+                <p className="text-muted-foreground">Generated on {new Date().toLocaleDateString()}</p>
             </header>
             <main className="space-y-12">
               <Card className="bg-primary/5 border-primary/20 ring-1 ring-primary/20">
@@ -138,7 +150,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                   </CardHeader>
                   <CardContent className="flex flex-wrap gap-2">
                     {result.documentTypes?.map((docType, index) => (
-                        <p key={index} className="font-code bg-secondary text-secondary-foreground inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
+                        <p key={index} className="font-mono bg-secondary text-secondary-foreground inline-block px-3 py-1 rounded-full text-sm border">{docType}</p>
                     ))}
                   </CardContent>
                 </Card>
@@ -223,7 +235,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
                                               <p className="font-semibold text-primary/90 flex items-center gap-2"><CheckCircle className="h-5 w-5"/>Actionable Step:</p>
                                               <p className="text-primary/80 mt-1 pl-7">{strategy.action}</p>
                                           </div>
-                                          <p className="text-xs text-gray-500 mt-3 font-code">Relevant Section: {strategy.relevantSection}</p>
+                                          <p className="text-xs text-gray-500 mt-3 font-mono">Relevant Section: {strategy.relevantSection}</p>
                                        </div>
                                   </div>
                               </div>
