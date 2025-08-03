@@ -134,7 +134,7 @@ No documents were uploaded. Base your analysis solely on the Client Questionnair
   - Mortgage Interest: ${input.deductionsAndCredits?.mortgageInterest || 'Not Provided'}
   - Charitable Donations: ${input.deductionsAndCredits?.charitableDonations || 'Not Provided'}
   - Student Loan Interest: ${input.deductionsAndCredits?.studentLoanInterest || 'Not Provided'}
-  - Other Key Deductions: ${input.deductionsAndCredits?.otherDDeductions || 'Not Provided'}
+  - Other Key Deductions: ${input.deductionsAndCredits?.otherDeductions || 'Not Provided'}
 - **Business & Rental Income:**
   - Business Revenue: ${input.businessAndRental?.businessRevenue || 'Not Provided'}
   - Business Expenses: ${input.businessAndRental?.businessExpenses || 'Not Provided'}
@@ -149,5 +149,3 @@ No documents were uploaded. Base your analysis solely on the Client Questionnair
     return output!;
   }
 );
-
-    

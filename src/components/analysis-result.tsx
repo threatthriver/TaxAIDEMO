@@ -3,7 +3,6 @@
 
 import type { AnalyzeTaxDocumentOutput } from '@/ai/flows/analyze-tax-document';
 import React, { useState, useRef } from 'react';
-import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -47,6 +46,7 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
     const progressPercentage = result.strategies.length > 0 ? (completedCount / result.strategies.length) * 100 : 0;
     
     const handleDownloadPdf = async () => {
+        const { default: jsPDF } = await import('jspdf');
         const content = printRef.current;
         if (!content) return;
 
