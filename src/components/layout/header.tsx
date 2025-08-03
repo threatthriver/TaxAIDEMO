@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, ShieldCheck, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ThemeToggle } from '../theme-toggle';
+
 
 const Logo = ({ onClick }: { onClick?: () => void }) => (
     <Link
@@ -24,6 +27,7 @@ const Logo = ({ onClick }: { onClick?: () => void }) => (
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,9 +63,16 @@ export default function Header() {
         <Logo onClick={() => setIsMenuOpen(false)} />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Settings className="h-5 w-5" />
-          </Button>
+            <Popover open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                <PopoverTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                        <Settings className={cn("h-5 w-5 transition-transform duration-300", isSettingsOpen && "rotate-45")} />
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-2" align="end">
+                    <ThemeToggle />
+                </PopoverContent>
+            </Popover>
         </div>
         <div className="md:hidden">
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
