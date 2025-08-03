@@ -1,70 +1,156 @@
 
-'use client';
-import Image from "next/image";
+'use client'
+import { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
-const teamMembers = [
-    {
-        name: 'Jasmine Patel',
-        role: 'LEAD AI STRATEGIST',
-        imageUrl: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMHdvbWFufGVufDB8fHx8MTc1Mzk2NTAwN3ww&ixlib=rb-4.1.0&q=80&w=1080',
-        bgColor: 'bg-primary/20',
-        description: 'Jasmine pioneers our AI-driven tax analysis, ensuring our strategies are always one step ahead.',
-        linkText: 'The Future of Tax Law →'
-    },
-    {
-        name: 'Leo Rodriguez',
-        role: 'HEAD OF ENGINEERING',
-        imageUrl: 'https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NTM5NjUwMDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
-        bgColor: 'bg-accent',
-        description: 'Leo leads the development of our robust platform, turning complex algorithms into a seamless user experience.',
-        linkText: 'Building Secure FinTech →'
-    }
-]
+const sections = [
+  {
+    title: 'experiences',
+    description: 'Our eyes are set on an entirely new class of AI-centered experiences built for people.',
+    image: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZW9wbGUlMjBpbiUyMGElMjBtZWV0aW5nfGVufDB8fHx8MTc1Mzk2NTAwOXww&ixlib=rb-4.1.0&q=80&w=1080'
+  },
+  {
+    title: 'connection',
+    description: 'We make beautiful, interconnected experiences that are infused with warmth.',
+    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwZW9wbGUlMjBjcmVhdGluZyUyMGNvbm5lY3Rpb25zfGVufDB8fHx8MTc1Mzk2NTAwOXww&ixlib=rb-4.1.0&q=80&w=1080'
+  }
+];
+
+const values = [
+  {
+    title: 'Kindness',
+    description: 'Kindness is at the heart of how we conduct ourselves.',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+  },
+  {
+    title: 'Trust',
+    description: 'We put our users first and focus on earning their trust.',
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+  },
+  {
+    title: 'Quality',
+    description: 'We only deliver beautiful, reliable and category-defining products that delight.',
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiZWF1dGlmdWwlMjB0ZWNobm9sb2d5JTIwcGhvdG98ZW58MHx8fHwxNzUzOTY1MDEw&ixlib=rb-4.1.0&q=80&w=1080'
+  },
+];
 
 export default function AboutPage() {
-    return (
-        <div className="bg-background min-h-screen py-20 md:py-32">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-                    <div className="md:col-span-1">
-                        <h1 className="font-serif text-6xl font-light text-foreground leading-tight">
-                            Get to<br/>know us
-                        </h1>
-                        <p className="mt-6 text-lg text-muted-foreground">
-                            Meet the brilliant minds behind TaxAI.
-                        </p>
-                    </div>
-                    <div className="md:col-span-2">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-24">
-                           {teamMembers.map((member, index) => (
-                               <div key={member.name} className={`relative ${index % 2 !== 0 ? 'sm:mt-24' : ''}`}>
-                                   <div className="relative group">
-                                       <div className={`absolute -inset-4 ${member.bgColor} rounded-full transform transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3`} style={{clipPath: 'ellipse(60% 50% at 50% 50%)'}} />
-                                       <Image
-                                           src={member.imageUrl}
-                                           alt={member.name}
-                                           width={400}
-                                           height={500}
-                                           className="relative z-10 w-full rounded-lg shadow-lg object-cover h-[400px]"
-                                           data-ai-hint="professional portrait"
-                                       />
-                                       <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
-                                           <div className="bg-foreground/80 backdrop-blur-sm text-background w-56 h-56 rounded-full flex flex-col items-center justify-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <p className="text-xl font-semibold leading-tight">{member.description}</p>
-                                                <p className="text-sm mt-3 font-medium text-primary">{member.linkText}</p>
-                                           </div>
-                                       </div>
-                                   </div>
-                                   <div className="mt-6 text-center">
-                                       <p className="text-sm font-semibold text-primary tracking-widest">{member.role}</p>
-                                       <p className="text-xl font-bold text-foreground mt-1">{member.name}</p>
-                                   </div>
-                               </div>
-                           ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const { scrollYProgress } = useScroll();
+  const [currentSection, setCurrentSection] = useState(0);
+  const [hoveredValue, setHoveredValue] = useState<number | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on('change', (latest) => {
+      const newSection = Math.min(sections.length - 1, Math.floor(latest * 4));
+      if (newSection !== currentSection) {
+        setCurrentSection(newSection);
+      }
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress, currentSection]);
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+
+  const safeCurrentSection = sections[currentSection] || sections[0];
+
+  return (
+    <div className="bg-[#f5f3ef] min-h-screen text-[#3a3a3a]">
+      {/* Hero Section */}
+      <div className="h-[150vh] relative">
+        <motion.div style={{ y }} className="sticky top-0 h-screen flex items-center justify-center">
+          <div className="text-center px-4">
+            <h1 className="text-7xl md:text-9xl font-serif">
+              We build
+              <br />
+              <motion.span
+                key={safeCurrentSection.title}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+                className="inline-block"
+              >
+                {safeCurrentSection.title}.
+              </motion.span>
+            </h1>
+            <motion.p
+              key={safeCurrentSection.description}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mt-4 text-xl max-w-2xl mx-auto"
+            >
+              {safeCurrentSection.description}
+            </motion.p>
+          </div>
+          <motion.div
+            key={safeCurrentSection.image}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 z-0"
+          >
+            <Image
+              src={safeCurrentSection.image}
+              alt={safeCurrentSection.title}
+              layout="fill"
+              objectFit="cover"
+              className="opacity-20"
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Values Section */}
+      <div className="py-32">
+        <div className="text-center mb-16">
+          <h2 className="text-6xl font-serif">Our Values</h2>
+          <p className="mt-4 text-lg max-w-2xl mx-auto">
+            In everything we do, we embody the following principles:
+          </p>
         </div>
-    );
+        <div className="max-w-4xl mx-auto space-y-8">
+          {values.map((value, index) => (
+            <motion.div
+              key={value.title}
+              className="relative border-b border-gray-300 py-8"
+              onMouseEnter={() => setHoveredValue(index)}
+              onMouseLeave={() => setHoveredValue(null)}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="text-5xl font-serif text-gray-400 hover:text-gray-800 transition-colors duration-300">
+                  {value.title}
+                </h3>
+                <p className="text-lg max-w-xs text-right">{value.description}</p>
+              </div>
+              <AnimatePresence>
+                {hoveredValue === index && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: -40, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full"
+                  >
+                    <Image
+                      src={value.image}
+                      alt={`${value.title} value`}
+                      width={150}
+                      height={150}
+                      className="rounded-full shadow-2xl"
+                      data-ai-hint="cute, abstract image representing a value"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
