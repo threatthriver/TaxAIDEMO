@@ -52,9 +52,9 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 p-4 transition-all duration-300">
        <nav className={cn(
-        "container mx-auto px-6 flex justify-between items-center border transition-all duration-300",
+        "container mx-auto px-6 flex justify-between items-center border transition-all duration-300 rounded-full",
         isScrolled ? "py-2 shadow-lg" : "py-3 shadow-sm",
-        "bg-background/80 backdrop-blur-lg border-border/40 rounded-full",
+        "bg-background/80 backdrop-blur-lg border-border/40",
        )}>
         <Logo onClick={() => setIsMenuOpen(false)} />
         <div className="hidden md:flex items-center space-x-8">{navLinks}</div>
