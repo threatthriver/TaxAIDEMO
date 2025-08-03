@@ -26,8 +26,18 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-background pt-24 md:pt-32">
-        <div className="container mx-auto px-6 py-12 text-center">
+      <section className="bg-background pt-24 md:pt-32 relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-background to-background/80 backdrop-blur-sm"></div>
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-40 animate-blob"></div>
+          <div className="absolute top-1/4 right-1/4 w-80 h-80 bg-teal-400/10 rounded-full filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-primary/10 rounded-full filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="container mx-auto px-6 py-12 text-center relative z-10">
           <div className="animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-extrabold text-foreground mb-4 leading-tight">
               Automated Tax Planning. <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-teal-400">Unmatched Savings.</span>
