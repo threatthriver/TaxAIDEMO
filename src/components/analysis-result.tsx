@@ -59,13 +59,36 @@ export default function AnalysisResultDisplay({ result, onReset }: AnalysisResul
         });
 
         const imgData = canvas.toDataURL('image/png');
+        
         const pdf = new jsPDF({
             orientation: 'portrait',
             unit: 'px',
-            format: [canvas.width, canvas.height]
+            format: 'a4'
         });
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const canvasAspectRatio = canvasWidth / canvasHeight;
+        const pdfAspectRatio = pdfWidth / pdfHeight;
+
+        let finalCanvasWidth, finalCanvasHeight;
+
+        // Fit to width
+        finalCanvasWidth = pdfWidth;
+        finalCanvasHeight = finalCanvasWidth / canvasAspectRatio;
+
+        if (finalCanvasHeight > pdfHeight) {
+            // If height is too big after fitting to width, fit to height instead
+            finalCanvasHeight = pdfHeight;
+            finalCanvasWidth = finalCanvasHeight * canvasAspectRatio;
+        }
         
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        const x = (pdfWidth - finalCanvasWidth) / 2;
+        const y = (pdfHeight - finalCanvasHeight) / 2;
+
+        pdf.addImage(imgData, 'PNG', x, y, finalCanvasWidth, finalCanvasHeight);
         pdf.save('Tax-Analysis-Report.pdf');
     };
 
